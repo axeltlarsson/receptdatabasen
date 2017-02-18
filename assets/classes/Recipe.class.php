@@ -1,6 +1,6 @@
 <?php
 /**	Klass som hanterar recept.
- *	
+ *
  *	@author Axel Larsson <axl.larsson@gmail.com>
  *
  */
@@ -21,17 +21,17 @@ class Recipe
 	 *	?@var data _dateUpdated - datum då det senast uppdaterades	(sätts automatiskt varje update av MySql)
 	 */
 	 private $_title,
-		$_intro, 
+		$_intro,
 		$_sets,
 		$_instructions,
 		$_gallery,
 		$_tags,
 		$_nbrOfPersons,
 		$_id;
-		
+
 	/**
 	 *	Konstruktör
-	 *	
+	 *
 	 *	@param string $title - titeln på receptet
 	 *	@param string $intro - inledning på receptet
 	 *	@param array Set $sets - innehåller en lista med Set-objekt
@@ -47,21 +47,21 @@ class Recipe
 		if (func_num_args() != 6) {
 			throw new Exception('Recipe.class.php->__construct: WRONG NUMBER OF ARGUMENTS');
 		}
-		
+
 		// Validera $title
 		$this->_title = self::validateString($title);
 
 		// Validera $intro
 		$this->_intro = self::validateString($intro);
-		
+
 		// Validera $sets
-		$this->_sets = self::validateSets($sets);	
-		
+		$this->_sets = self::validateSets($sets);
+
 		// Validera $instructions
 		$this->_instructions = self::validateString($instructions);
-		
+
 		// Validera $tags
-		$this->_tags = self::validateTags($tags);	
+		$this->_tags = self::validateTags($tags);
 
 		// Validera $nbrOfPersons
 		if(is_int($nbrOfPersons)) {
@@ -70,7 +70,7 @@ class Recipe
 			throw new Exception('Recipe.class.php->__construct: PARAMETER $nbrOfPersons IS NOT A VALID INTEGER.');
 		}
 	}
-	
+
 	/**
 	 *	Lägger till Image-objekt (bilder med caption) till galleriet
 	 *
@@ -85,14 +85,14 @@ class Recipe
 		// Om $_gallery inte är en array (bara en Image)
 		if (!is_array($this->_gallery)) {
 			// gör om den till en array
-			$image = $this->_gallery; 
+			$image = $this->_gallery;
 			$this->_gallery = array($image);
 		}
 		// Validera $images
 		if (is_array($images)) { // om det är en array
 			foreach($images as $image) {	// kolla varje objekt
 				if($image instanceof Image) {	// om det är ett Image-objekt
-					$this->_gallery[] = $image;	// lägg in det i $_gallery	
+					$this->_gallery[] = $image;	// lägg in det i $_gallery
 				} else {	// om det inte är ett Image-objekt
 					throw new Exception('Recipe.class.php->addImages: PARAMETER $images IS NOT A VALID IMAGE ARRAY.');
 				}
@@ -102,10 +102,10 @@ class Recipe
 				$this->_gallery[] = $images;
 			} else {	// det är inte ett Image-objekt
 				throw new Exception('Recipe.class.php->addImages: PARAMETER $images IS NOT AN IMAGE.');
-			}	
+			}
 		}
 	}
-	
+
 	/**
 	 *	Lägg till Set - ett i taget eller i en array
 	 *
@@ -123,7 +123,7 @@ class Recipe
 		// Om $_sets inte är en array
 		if (!is_array($this->_sets)) {
 			// gör om den till en array
-			$set = $this->_sets; 
+			$set = $this->_sets;
 			$this->_sets = array($set);
 		}
 		// Lägg in
@@ -134,9 +134,9 @@ class Recipe
 		} else {	// ett Set-objekt
 			$this->_sets[] = $sets;
 		}
-		
+
 	}
-	
+
 	/**
 	 *	Lägger till taggar till ett recept
 	 *
@@ -150,14 +150,14 @@ class Recipe
 		}
 		// Validera taggen/taggarna
 		self::validateTags($tags);
-		
+
 		// Om $_tags inte är en array (bara en tagg)
 		if (!is_array($this->_tags)) {
 			// gör om den till en array
-			$tag = $this->_tags; 
+			$tag = $this->_tags;
 			$this->_tags = array($tag);
 		}
-		
+
 		if (is_array($tags)) {	// om det är en array av taggar
 			foreach($tags as $tag) {	// lägg till varje tagg i arrayen
 				$this->_tags[] = $tag;
@@ -166,7 +166,7 @@ class Recipe
 			$this->_tags[] = $tags;
 		}
 	}
-	
+
 	/**
 	 *	Sparar receptet till databasen
 	 *
@@ -175,18 +175,18 @@ class Recipe
 	public function saveToDb()
 	{
 		// Variabler till att koppla upp mot databasen
-		$dataBaseName = 'changeme';
-		$user = 'changeme';
-		$host = 'localhost';
-		$password = 'changeme';
-		
+    $dataBaseName = $_ENV["SQL_DB"];
+    $user = $_ENV["SQL_USER"];
+    $host = $_ENV["SQL_HOST"];
+    $password = $_ENV["SQL_PASSWORD"];
+
 		// För loggning
 		$editMode = false;
 		try {	// Skapa ett PDO-objekt
 			$db = new PDO("mysql:host=$host;dbname=$dataBaseName;charset=utf8", $user, $password);
 			$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			$db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-			
+
 			/*------------------------------------------
 				Om receptet redan finns
 			-------------------------------------------*/
@@ -205,25 +205,25 @@ class Recipe
 									 ':nbrOfPersons' => $this->_nbrOfPersons,
 									 ':p_id' => $this->_id));
 				$updateRecipe->execute(array(':p_id' => $this->_id));
-				
+
 				/*---------------------------------------
 					Ta bort de gamla taggarna
 				----------------------------------------*/
 				// Förbered SQL-statement
-				$deleteTags = $db->prepare('DELETE FROM Tags WHERE F_id=:f_id'); 
-				
+				$deleteTags = $db->prepare('DELETE FROM Tags WHERE F_id=:f_id');
+
 				// Bind variabler och exekvera SQL
 				$deleteTags->execute(array(':f_id' => $this->_id));
-				
+
 				/*---------------------------------------
-					Ta bort bilderna ur galleriet 
+					Ta bort bilderna ur galleriet
 				----------------------------------------*/
 				// Förbered SQL-statement
-				$deleteGallery = $db->prepare('DELETE FROM Gallery WHERE F_id=:f_id'); 
-				
+				$deleteGallery = $db->prepare('DELETE FROM Gallery WHERE F_id=:f_id');
+
 				// Bind variabler och exekvera SQL
 				$deleteGallery->execute(array(':f_id' => $this->_id));
-							
+
 				/*---------------------------------------
 					Ta bort ingredienser och set
 				----------------------------------------*/
@@ -231,25 +231,25 @@ class Recipe
 				$getSetIds = $db->prepare('SELECT P_id FROM Sets WHERE F_id=:f_id');
 				$deleteIngredients = $db->prepare('DELETE FROM Ingredients WHERE F_id=:f_id');
 				$deleteSets = $db->prepare('DELETE FROM Sets WHERE F_id=:f_id');
-				
+
 				// Ta reda på alla gamla set-id
 				$getSetIds->execute(array(':f_id' => $this->_id));
-				
-				// För varje set i receptet -> radera dess ingredienser	
+
+				// För varje set i receptet -> radera dess ingredienser
 				foreach($setIds = $getSetIds->fetchAll() as $setId) {
 					$deleteIngredients->execute(array('f_id' => $setId[0]));
 				}
-				
+
 				// Bind varibler (receptId) och exekvera SQL - radera set:en
-				$deleteSets->execute(array(':f_id' => $this->_id));				
-				
+				$deleteSets->execute(array(':f_id' => $this->_id));
+
 			} else {
 				/*-----------------------------------------
 					Gör en entry för receptet i `Recipes`
 				------------------------------------------*/
 				// Förbered SQL-statement
 				$stmt = $db->prepare("INSERT INTO Recipes(Title, Intro, Instructions, NbrOfPersons) VALUES(:title, :intro, :instructions, :nbrOfPersons)");
-				
+
 				// Bind variabler och exekvera SQL
 				$stmt->execute(array(':title' => $this->_title,
 									 ':intro' => $this->_intro,
@@ -259,42 +259,42 @@ class Recipe
 				if($stmt->rowCount() != 1){
 					throw new Exception("Recipe.class.php->saveToDb: SOMETHING WENT WRONG WHEN SAVING THE RECIPE TO THE DATABASE.");
 				}
-				
+
 				// Hämta receptets databasid
-				$this->_id = $db->lastInsertId();			
+				$this->_id = $db->lastInsertId();
 			}
-			
+
 			/*---------------------------------------
 				Lägg in taggar
 			----------------------------------------*/
 			if(isset($this->_tags)) {
 				// Förbered SQL-statement
 				$stmt = $db->prepare("INSERT INTO Tags VALUES(:tag, :f_id)");
-				
+
 				// Initiera variabler
 				$tag = '';
-				
+
 				// Bind variabler
 				$stmt->bindParam(':tag', $tag, PDO::PARAM_STR);	// binder :tag till $tag
 				$stmt->bindParam(':f_id', $this->_id, PDO::PARAM_STR);	// binder :f_id till $_id
-				
+
 				// Exekvera SQL med varje $tag från $_tags-arrayen
 				foreach($this->_tags as $tag) { // Gå igenom $_tags och lägg till taggar en efter en
 					$stmt->execute();
 				}
 			}
 			/*--------------------------------------------
-				Lägg till bilder till receptet 
-			----------------------------------------------*/				
+				Lägg till bilder till receptet
+			----------------------------------------------*/
 			// Om det finns bilder
 			if(isset($this->_gallery)) {
 				// Förbered SQL-statement
 				$stmt = $db->prepare("INSERT INTO Gallery VALUES(:caption, :filePath, :f_id)");
-				
+
 				// Initiera varibler
 				$caption = "";
 				$filePath = "";
-				
+
 				// Bind varibler
 				$stmt->bindParam(':caption', $caption, PDO::PARAM_STR);	// binder :caption till $caption
 				$stmt->bindParam(':filePath', $filePath, PDO::PARAM_STR); // binder :filePath till $filePath
@@ -306,45 +306,45 @@ class Recipe
 						$caption = $image->getCaption();
 						$filePath = $image->getPath();
 						$stmt->execute();
-					}					
+					}
 				}
 			}
-			
+
 			/*--------------------------------------
 				Lägg till set till receptet
 			---------------------------------------*/
 			// Förbered SQL-statement
 			$stmt = $db->prepare("INSERT INTO Sets(SetName, F_id) VALUES(:setName, :f_id)");
-			
+
 			// Initiera varibler
 			$setName = "";
-			
+
 			// Bind varibler
 			$stmt->bindParam(':setName', $setName, PDO::PARAM_STR); // binder :setName till $setName
 			$stmt->bindParam(':f_id', $this->_id, PDO::PARAM_STR); // binder :f_id till $_id
-			
+
 			// Exekvera SQL med varje $setName från $_sets-arrayen
 			foreach($this->_sets as $set) {
 				$setName = $set->getName();
 				$stmt->execute();
-				
+
 				// Hämta och lagra set:ets databasid
 				$set->setId($db->lastInsertId());
-				
+
 				/*-----------------------------------------
 					Lägg till ingredienser till set:et
 				--------------------------------------------*/
 				// Förbered SQL-statement
 				$stmtIng = $db->prepare("INSERT INTO Ingredients VALUES(:ingredient, :f_id)");
-				
+
 				// Initiera variabler
 				$ingredient = "";
                 $ingredientId = $set->getId();
-				
+
 				// Bind variabler
 				$stmtIng->bindParam(':ingredient', $ingredient, PDO::PARAM_STR); // binder :ingredient till $ingredient
 				$stmtIng->bindParam(':f_id', $ingredientId, PDO::PARAM_STR); // binder :f_id till set:ets id
-			
+
 				// Kolla så att set:et innehåller ingredienser - att det är en array
 				if (!is_array($set->getIngredients())) {
 					throw new Exception("Recipe.class.php->saveToDb: SET DOES NOT CONTAIN ANY INGREDIENTS.");
@@ -361,7 +361,7 @@ class Recipe
 			return false;
 		}
 	}
-	
+
 	/**
 	 *	Tar bort receptet ur databasen
 	 *
@@ -369,7 +369,7 @@ class Recipe
 	 */
 	public function deleteFromDb()
 	{
-	
+
 		// Variabler till att koppla upp mot databasen
 		$dataBaseName = 'receptdatabasen';
 		$user = 'receptdatabasen';
@@ -381,52 +381,52 @@ class Recipe
 			if(!isset($this->_id)) {
 				throw new Exception("Recipe.class.php->deleteFromDb: RECIPE CANNOT BE DELETED: IT HAS NO DATABASE ID!");
 			}
-			
+
 			// Skapa ett PDO-objekt
 			$db = new PDO("mysql:host=$host;dbname=$dataBaseName;charset=utf8", $user, $password);
 			$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			$db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-			
+
 			/*---------------------------------------
 				Ta bort taggar
 			----------------------------------------*/
 			// Förbered SQL-statement
-			$deleteTags = $db->prepare('DELETE FROM Tags WHERE F_id=:f_id'); 
-			
+			$deleteTags = $db->prepare('DELETE FROM Tags WHERE F_id=:f_id');
+
 			// Bind variabler och exekvera SQL
 			$deleteTags->execute(array(':f_id' => $this->_id));
-			
+
 			/*---------------------------------------
-				Ta bort bilderna ur galleriet 
+				Ta bort bilderna ur galleriet
 			----------------------------------------*/
 			// Förbered SQL-statement
-			$deleteGallery = $db->prepare('DELETE FROM Gallery WHERE F_id=:f_id'); 
-			
+			$deleteGallery = $db->prepare('DELETE FROM Gallery WHERE F_id=:f_id');
+
 			// Bind variabler och exekvera SQL
 			$deleteGallery->execute(array(':f_id' => $this->_id));
-						
+
 			/*---------------------------------------
 				Ta bort ingredienser och set
 			----------------------------------------*/
 			// Förbered SQL-statement
 			$deleteIngredients = $db->prepare('DELETE FROM Ingredients WHERE F_id=:f_id');
 			$deleteSets = $db->prepare('DELETE FROM Sets WHERE F_id=:f_id');
-			
+
 			// För varje set i $_sets -> radera dess ingredienser
 			foreach($this->_sets as $set) {
 				$setId = $set->getId();
 				$deleteIngredients->execute(array('f_id' => $setId));
 			}
-			
+
 			// Bind varibler (receptId) och exekvera SQL - radera set:en
 			$deleteSets->execute(array(':f_id' => $this->_id));
-		
+
 			/*--------------------------------------
 				Ta bort entry från `Recipes`
 			---------------------------------------*/
 			// Förbered SQL-statement
 			$deleteRecipe = $db->prepare('DELETE FROM Recipes WHERE P_id=:p_id');
-			
+
 			// Bind varibler och exekvera SQL
 			$deleteRecipe->execute(array(':p_id' => $this->_id));
 
@@ -441,7 +441,7 @@ class Recipe
 		}
 		return true; // det gick bra att radera
 	}
-	 
+
 	/**
 	 *	Intern funktion som validerar Set:s
 	 *	Kastar ett fel om valideringen misslyckas.
@@ -458,7 +458,7 @@ class Recipe
 					throw new Exception('Recipe.class.php->validateSets: PARAMETER $sets IS NOT A VALID SET ARRAY.');
 				}
 			}
-		
+
 		} else {	// inte en array
 			if(!$sets instanceof Set) {
 				throw new Exception('Recipe.class.php->validateSets: PARAMETER $sets IS NOT A VALID SET.');
@@ -466,11 +466,11 @@ class Recipe
 		}
 		return $sets;
 	}
-	
+
 	/**
 	 *	Intern funktion som validerar taggar
 	 *	Kastar ett fel om det inte går att validera taggarna.
-	 *	
+	 *
 	 *	@param string/array with strings $tags - taggar i en sträng eller i en array
 	 *
 	 *	@return @param $tags - returnerar parametern om inga fel påträffades
@@ -484,13 +484,13 @@ class Recipe
 				}
 			}
 		} else {	// inte en array
-			if(!is_string($tags)) {	
+			if(!is_string($tags)) {
 				throw new Exception('Recipe.class.php->validateTags: PARAMETER $tags IS NOT A STRING');	// ej sträng
 			}
 		}
 		return $tags;
 	}
-	
+
 	/**
 	 *	Intern funktion som validerar strängar
 	 *	Kastar ett fel om det inte är en sträng
@@ -508,67 +508,67 @@ class Recipe
 			return $string;
 		}
 	}
-	
+
 	/**
 	 *	Returnerar titel
-	 *	
+	 *
 	 *	@return string - innehållandes titeln
 	 */
-	public function getTitle() 
+	public function getTitle()
 	{
 		return $this->_title;
 	}
-	
+
 	/**
 	 *	Returnerar intro
-	 *	
+	 *
 	 *	@return string - innehållandes inledningen
 	 */
-	public function getIntro() 
+	public function getIntro()
 	{
 		return $this->_intro;
 	}
-	
+
 	/**
 	 *	Returnerar sets
-	 *	
+	 *
 	 *	@return array - innehållandes sets
 	 */
-	public function getSets() 
+	public function getSets()
 	{
 		return $this->_sets;
 	}
-	
+
 	/**
 	 *	Returnerar instruktionerna
-	 *	
+	 *
 	 *	@return string - innehållandes instruktioner
 	 */
-	public function getInstructions() 
+	public function getInstructions()
 	{
 		return $this->_instructions;
 	}
-	
+
 	/**
 	 *	Returnerar taggar
-	 *	
+	 *
 	 *	@return array - innehållandes taggar
 	 */
-	public function getTags() 
+	public function getTags()
 	{
 		return $this->_tags;
 	}
-	
+
 	/**
 	 *	Returnera galleriet
-	 *	
+	 *
 	 *	@return Image/array with Image:s - returnerar antingen en array av Image-objekt eller ett Image-objekt
 	 */
 	public function getGallery()
 	{
 		return $this->_gallery;
 	}
-	
+
 	/**
 	 *	Returnerar antalet personer
 	 *
@@ -578,22 +578,22 @@ class Recipe
 	{
 		return $this->_nbrOfPersons;
 	}
-    
+
     /**
      *  Returnerar rätt böjning av substantivet person(er)
      *  beroende på om getNbrOfPersons() är plural/singular.
-     *  
+     *
      *  @return string "person" eller "personer"
      */
     public function getNoun()
     {
         return $this->_nbrOfPersons > 1 ? "personer" : "person";
     }
-    
-	
+
+
 	/**
 	 *	Returnerar databasid om det finns
-	 *	
+	 *
 	 *	@return int $_id - eller false om det inte existerar
 	 */
 	public function getId()
@@ -610,31 +610,31 @@ class Recipe
 	 *
 	 *	@param string $newTitle - den nya titeln
 	 */
-	public function setTitle($newTitle) 
+	public function setTitle($newTitle)
 	{
 		$this->_title = self::validateString($newTitle);
 	}
-	
+
 	/**
 	 *	Ändrar inledning
 	 *
 	 *	@param string $newIntro - den nya inledningen
 	 */
-	public function setIntro($newIntro) 
+	public function setIntro($newIntro)
 	{
 		$this->_intro = self::validateString($newIntro);
 	}
-		
+
 	/**
 	 *	Sätter instruktionerna
 	 *
 	 *	@param string $newInstructions - innehåller de instruktionerna
 	 */
-	public function setInstructions($newInstructions) 
+	public function setInstructions($newInstructions)
 	{
 		$this->_instructions = self::validateString($newInstructions);
 	}
-	
+
 	/**
 	 *	Sätter $_id
 	 *
@@ -646,7 +646,7 @@ class Recipe
 		if (func_num_args() != 1) {
 			throw new Exception('Recipe.class.php->setId: WRONG NUMBER OF ARGUMENTS');
 		}
-		
+
 		// Lagra databasid om det är en int
 		if (is_int($setId)) {
 			$this->_id = $setId;
@@ -654,13 +654,13 @@ class Recipe
 			throw new Exception('Recipe.class.php->setId: PARAMETER $setId IS NOT A NUMBER.');
 		}
 	}
-	 
+
 	/** !!!! FUngerar ej med endast ett set eller en tag som ej ligger i en array !!!
 	 *	Printar receptet, denna funktion kommer förmodligen att kasseras
-	 *	
+	 *
 	 *	@return string - en sträng innehållandes receptet i html format
 	 */
-	public function printRecipe() 
+	public function printRecipe()
 	{
 		$recipe = "";
 		$recipe .= '<h3>' . $this->_title . '</h3><br />';
@@ -680,7 +680,7 @@ class Recipe
 		$recipe .= '# ' . $this->_nbrOfPersons;
 		return $recipe;
 	}
-	 
+
 }
 
 

@@ -33,10 +33,10 @@ function connectToDb() {
 	/*-------------------------------------------------
 		Koppla upp mot databasen
 	-------------------------------------------------*/
-	$dataBaseName = 'CHANGEME';
-	$user = 'CHANGEME';
-	$host = 'localhost';
-	$password = 'CHANGEME';
+	$dataBaseName = $_ENV["SQL_DB"];
+	$user = $_ENV["SQL_USER"];
+	$host = $_ENV["SQL_HOST"];
+	$password = $_ENV["SQL_PASSWORD"];
 
 	try {
 		// Skapa ett PDO-objekt
