@@ -1,8 +1,8 @@
 <?php
-/**	
+/**
  *	Klass som hanterar bilder för ett recept.
  *	Omge med try-catch block.
- *	
+ *
  *	@author Axel Larsson <axl.larsson@gmail.com>
  *
  */
@@ -16,27 +16,27 @@ class Image
 	 */
 	private $_caption,
 		$_path;
-	
+
 	/**
 	 *	Array som definierar tillåtna MIME-typer
 	 */
 	private static $allowedMIMEs = array("image/jpg", "image/png", "image/gif", "image/jpeg");
-	
+
 	/**
 	 *	Konstant som definierar uppladdningsmapp
 	 *
 	 *	@var const string $UPLOAD_DIR
 	 */
 	const UPLOAD_DIR = '../uploaded_images/';	// ska vara '../uploaded_images/'
-		
+
 	/**
 	 *	Konstruktör - tar emot bilden i base64 eller som filsökväg
-	 *	utför diverse valideringar och lagrar sedan 
+	 *	utför diverse valideringar och lagrar sedan
 	 *	bilden med ett slumpmässigt vald namn
 	 *	Tar dessutom emot en captionsträng.
-	 * 
+	 *
 	 *	Om valideringen misslyckas kastas fel.
-	 *	
+	 *
 	 *	@param string $image - bilden kodad i base64 eller en filsökväg
 	 *	@param string $caption
 	 */
@@ -48,14 +48,14 @@ class Image
 		}
 		// lagra caption
 		$this->_caption = $caption;
-		
+
 		// Om $image är en filsökväg - lagra värdet och vi är klara
 		if (strpos($image, 'uploaded_images') !== false) {
 			$this->_path = $image;
 			return;
 		}
-		
-		
+
+
 		// kolla MIME
 		$MIME = self::getMimeFromBase64($image);
 		if (!in_array($MIME, self::$allowedMIMEs)) {
@@ -64,24 +64,24 @@ class Image
 
 		// konvertera från base64 till riktig data
 		$image = self::convertBase64ToImage($image);
-		
+
 		// kolla så att konverteringen lyckades
 		if ($image == false) {
 			throw new Exception("Image.class.php->__construct: CONVERSION FAILED.");
 		}
-		
+
 		// spara bilden, lagra filsökväg
 		$extension = self::getExtensionFromMIME($MIME);
-		$this->_path = self::UPLOAD_DIR . uniqid() . $extension;	
-	
-		// Spara filen	
+		$this->_path = self::UPLOAD_DIR . uniqid() . $extension;
+
+		// Spara filen
 		if (!file_put_contents($this->_path, $image)) {
 			throw new Exception("Image.class.php->__construct: COULDN'T SAVE IMAGE.");
 			// Ta bort filen
 			unlink($file);
 		}
 	}
-	
+
 	/**
 	 *	Tar reda på MIME-typ av en base64-kodad bild
 	 *
@@ -89,13 +89,13 @@ class Image
 	 *	@return string 			- MIME-typen
 	 */
 	private function getMimeFromBase64($base64)
-	{	
+	{
 		// tokeniza base64
 		$MIME = strtok($base64, ';');
 		$MIME = strtok($MIME, ':');
 		return strtok(':');
 	}
-	
+
 	/**
 	 *	Konverterar base64 till vanlige en vanlig bild
 	 *
@@ -111,20 +111,20 @@ class Image
 		// Konvertera till "vanlig" bildfil
 		return base64_decode($base64, 0);
 	}
-	
+
 	/**
 	 *	Beräknar filändelse utifrån MIME-typ
 	 *
 	 *	@param string $MIME - MIME-typ, ex: image/jpg
 	 *
-	 *	@return string - returnerar filändelse, ex: .jpg	
+	 *	@return string - returnerar filändelse, ex: .jpg
 	 */
 	private function getExtensionFromMIME($MIME)
 	{
 		$MIME = strtok($MIME, '/');
 		return '.' . strtok('/');
 	}
-	
+
 	/**
 	 *	Get-funktion för filsökväg
 	 *
@@ -134,7 +134,7 @@ class Image
 	{
 		return $this->_path;
 	}
-	
+
 	/**
 	 *	Get-funktion för bildtext
 	 *
@@ -144,7 +144,7 @@ class Image
 	{
 		return $this->_caption;
 	}
-	
+
 	/**
 	 *	Get-funktion som returnerar bilden i base64
 	 *
@@ -154,18 +154,18 @@ class Image
 	{
 		// @ innebär att eventuella fel ignoreras - såsom att filen inte finns
 		// File handler för att öppna filen
-		$path = '<REPLACE ME WITH CORRECT PATH>' . substr($this->_path, 3);
+		$path = $_ENV["IMAGE_UPLOAD_PATH"] . substr($this->_path, 3);
 		$handle = @fopen($path, 'r');
 		// Själva bilden
 		$image = @fread($handle, filesize($path));
 		@fclose($handle);
-		
+
 		// Filändelse från filsökvägen
 		$ext = substr(strrchr($path,'.'),1);
 		// Fixa base64 med lite MIME-prefix:
 		return 'data:image/' . $ext . ';base64,' . base64_encode($image);
 	}
-	
+
 	/**
 	 *	Set-funktion för bildtext
 	 *
