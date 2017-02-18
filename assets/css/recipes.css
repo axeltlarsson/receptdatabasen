@@ -1,0 +1,196 @@
+/*---------------------------------
+	CSS-fil för recipes.php
+----------------------------------*/
+
+/* Färgpalett "Sa Barca de Formentera"
+#333333
+#424242
+#00CCD6
+#EFEFEF
+#FFD900
+*/
+
+/*-------------------------------------------
+                Normal mode
+--------------------------------------------*/
+#container {
+    margin: 0px auto;   /* centrerar denna div på sidan */
+    padding-left: 0.625em;
+    padding-right: 0.625em;
+    
+    max-width: 62.9375em;
+    min-width: 43.75em;
+    
+    display: flex;
+    display: -webkit-flex; /* Safari */
+    
+    flex-direction: row;
+    -webkit-flex-direction: row;
+    
+    box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+#list {
+    margin: 0px auto;
+    margin-right: 0.625em;
+    
+    max-width: 43.75em;
+    min-width: 21.25em;
+    
+    order: 2;
+    -webkit-order: 2;
+    
+    background:  #333333;
+    color: #EFEFEF;
+    box-shadow: 0em 0.11875em 0.11875em #888888;
+    
+    box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+#sidebar {
+    order: 3;
+    -webkit-order: 3;
+    
+    flex-direction: column;
+    -webkit-flex-direction: column;
+    
+    box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+#tools, nav {
+    margin-left: 0em;
+    margin-right: 0em;
+    
+    box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+nav {
+    max-width: 21.875em; /* Den är normal bara 21.25 pga av margin-right när nav, #tools ligger bredvid varandra*/
+}
+
+/*-------------------------------------------
+                Mobile mode
+--------------------------------------------*/
+@media (max-device-width: 10px), (max-width: 120px) {
+    #container {
+        flex-direction: column-reverse;
+        -webkit-flex-direction: column-reverse;
+    }
+    
+    #sidebar {
+        margin: 0px auto;
+    }
+    
+    body {
+        font-size: 4em;
+    }
+    
+    #list {
+        max-width: 11.25em;
+        
+    }
+}
+
+
+/*-------------------------------------------
+                Allmänt
+--------------------------------------------*/
+/* Listan med recept */
+#recipes {
+    margin-right: 0.625em;
+    margin-left: 0.625em;
+    margin-bottom: 0em;    
+    
+    box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+/* Index */
+.indexCharacter {
+	font-size: 2.1875em;
+	padding-top: 0.625em;
+	position: relative;
+    color: #00CCD6;
+}
+
+/* Varje individuellt recept har denna klass */
+.recipeTitle a {
+    width: 100%;
+    display: block;
+    
+    min-height: 1.5em;
+	
+	margin-bottom: 0.5em;
+   
+	padding-top: 0.5em;
+	padding-left: 0.5em;
+    padding-right: 0.5em;
+    padding-bottom: 0.5em;
+
+    background-color: #424242;
+    color: #EFEFEF;
+    
+    text-decoration: none;
+    font-size: 1.2em;
+    
+    box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+.recipeTitle a:hover {
+    background-color:  #FFD900;
+    color: #333333;
+}
+
+
+/* Styla sorteringsknappar */
+#dateCreatedSort td a,
+#titleSort td a,
+#dateUpdatedSort td a {
+	font-size: 1.125em;
+}
+.icon.inactive {
+	opacity: 0.4;
+}
+
+/* Sökrutan */
+#searchBox {
+    outline: 0;
+    border: none;
+    
+	max-width: 15.625em;
+    
+	font-size: 1.125em;
+    padding: 0.125em 0.125em 0.125em 0.125em;
+    
+    background-color: #424242;
+    color: #EFEFEF;
+    
+    box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+#searchBox:focus {
+    color: #FFD900;
+}
+
+#tools {
+    color: #EFEFEF;
+}
+
+/* #widener används för att bredden på #list alltid är samma även när man har sökt på recept och träffarna har korta titlar */
+#widener, #widener td {
+    display: block;
+    height: 0px;
+}

@@ -1,0 +1,18 @@
+body {
+	width: auto;
+	background: black;
+}
+h1 {
+	font-size: 60px;
+	color: white;
+}
+h2 {
+	font-size: 40px;
+	color: white;
+}
+#stormtrooper {
+	position: fixed;
+	height: 300px;
+	right: 0px;
+	bottom: 0px;
+}

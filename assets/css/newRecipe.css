@@ -1,0 +1,532 @@
+/*-----------------------------------------
+	CSS för newRecipe.php
+------------------------------------------*/
+/* Färgpalett "Sa Barca de Formentera"
+#333333
+#424242
+#00CCD6
+#EFEFEF
+#FFD900
+*/
+
+textarea {
+    transition: height 0.2s;
+}
+
+#container_center { /* Hack för att får centerard utan att behöva ange bredd */
+    margin: auto;
+    display: table;
+}
+
+#container {
+    margin: 0px auto;   /* centrerar denna div på sidan (märks bara om man har horisontell uplösning > 2560px) */
+    
+    max-width: 99.125em;
+    padding-right: 0.625em;
+    padding-left: 0.625em;
+    
+    display: flex;
+    display: -webkit-flex;
+    
+    flex-direction: row;
+    flex-direction: -webkit-row;
+    
+    box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+main {
+    margin: 0px auto;
+    
+    
+    padding-right: 1.25em;
+    padding-left: 1.25em;
+    padding-bottom: 1.25em;
+    
+    margin-right: 1.625em;
+    
+    max-width: 53.75em;
+    min-width: 31.25em;
+    
+    order: 1;
+    -webkit-order: 1;
+    
+    box-shadow: 0em 0.11875em 0.11875em #888888;
+    background-color: #333333;
+        
+    box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+
+#right {
+    box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    
+   
+    
+    max-width: 43.75em;
+    min-width: 25em;
+    
+    order: 2;
+    -webkit-order: 2;
+}
+
+/*--------------------------------------------
+	titleDiv 
+ --------------------------------------------*/
+#title {
+    padding-left: 0.125em;
+    padding-top: 0.125em;
+    padding-bottom: 0.125em;
+    
+    margin-top: 0.625em;
+	
+    font-size: 3.75em;
+	width: 100%;
+	color: #FFD900;
+    background-color: #424242;
+    
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+
+/*--------------------------------------------
+	introDiv 
+ --------------------------------------------*/
+#intro {
+	margin-top: 1.625em;
+	margin-bottom: 1.25em;
+	height: 3.125em;
+	width: 100%;
+    min-height: 6.25em;
+	font-style: italic;
+    
+    padding: 0.625em 0.625em 0.625em 0.625em;
+    
+    background-color: #424242;
+    color: #EFEFEF;
+    
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+/*--------------------------------------------
+	ingredientsDiv 
+ --------------------------------------------*/
+#ingredientsDiv {
+    margin-bottom: 0.625em
+}
+
+.set {
+	border: 1px solid transparent;	/* osynlig border */
+    
+    min-width: 12.5em;
+    margin: 0 auto;
+	margin-top: 0.625em;
+	margin-bottom: 1.25em;
+	
+    padding: 0.625em 0.625em 0.625em 0.625em;
+    
+    float: left;
+    
+    box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+.ingredients input {
+    height: 2.5em;
+    min-width: 15.625em;
+	padding: 0.125em 0.125em 0.125em 0.625em;
+    
+    margin-bottom: 1.25em;
+    
+    background-color: #424242;
+    color: #EFEFEF;
+    
+    box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    
+}
+
+.ingredients {
+    width: 100%;
+}
+
+#selectedSet {
+	border: 1px solid #FFD900;
+}
+
+.hoveredSet {
+	border: 1px solid #FFD900;
+}
+
+.setHeading {
+
+    height: 2.5em;
+    min-width: 15.625em;
+	padding: 0.125em 0.125em 0.125em 0.625em;
+    
+    margin-bottom: 1.5625em;
+    
+    background-color: #424242;
+    color: #00CCD6;
+    
+    box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+
+}
+
+/*--------------------------------------------
+	instructionsDiv 
+ --------------------------------------------*/
+#instructionsDiv label {
+	clear: both;
+	color: #00CCD6;
+	display: block;
+    margin-bottom: 0.625em;
+}
+
+#instructionsDiv {
+	margin-top: 0.625em;
+	padding: 0.625em 0 0 0;
+}
+
+#instructions {
+	width: 100%;
+	min-height: 9.357em;
+    
+    padding: 0.625em 0.625em 0.625em 0.625em;
+    
+    background-color: #424242;
+    color: #EFEFEF;
+    
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+/*--------------------------------------------
+	nrbPersonsDiv 
+----------------------------------------------*/
+#nbrPersonsDiv input {
+    width: 1.125em;
+    
+    padding: 0.125em 0.125em 0.125em 0.625em;
+    
+    margin-left: 0.325em;
+    margin-right: 0.325em;
+    
+    background-color: #424242;
+    color: #EFEFEF;
+}
+
+#nbrPersonsDiv input:focus {
+    color: #FFD900;
+}
+
+#nbrPersonsDiv {
+    margin-top: 0.625em;
+}
+
+#nbrPersonsDiv label {
+	color: #00CCD6;
+}
+
+/*--------------------------------------------
+	tagsDiv 
+----------------------------------------------*/
+#tagsDiv {
+	margin-top: 0.625em;
+	padding: 0.625em 0 0 0;
+	clear: both;
+	display: block;
+}
+
+.tags {
+	float: left;
+	position: relative;
+	padding-right: 0.625em;
+	padding-top: 0.625em;
+}
+
+.tags input {
+    height: 2.5em;
+    min-width: 15.625em;
+	padding: 0.125em 0.125em 0.125em 0.625em;
+    
+    background-color: #424242;
+    color: #EFEFEF;
+    
+    box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+/* Ge en inaktiv effekt åt "spara recept" när den är inaktiverad */
+#inactive {
+	opacity: 0.4;
+}
+#inactive:hover {
+	color: #33ccff;
+	cursor: default;
+}
+/*---------------------------------------------
+	Galleriet
+-----------------------------------------------*/
+/* Uploadknappen döljs */ 
+#upload {
+	visibility: hidden;
+}
+
+#uploadbtn {
+	background: none;
+	color: none;
+	width: 100%;
+    height: 100%;
+	font-size: 6.25em;
+	cursor: pointer;
+    background-color: #333333;
+    box-shadow: 0em 0.019em 0.019em #888888;
+    border: none;
+}
+
+#uploadbtn:hover {
+	color: #FFD900;
+}
+
+#uploadbtn:active {
+	position: relative;
+    top: 2px;
+}
+
+#gallery {
+	margin-bottom: 1.625em;
+    margin-top: 1.625em;
+    height: 17.5em;
+}
+
+/*--------------------------------
+	PreviewDiv
+----------------------------------*/
+.preview {
+	width: 100;
+	height: 100%;
+	position: relative;
+	padding-bottom: 2.5em;
+}
+
+.preview img {
+    box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+	width: 100%;
+	border: 3px solid #fff;
+	display: block;
+	box-shadow:0 0 2px #000;
+	margin: 0 auto;
+	margin-bottom: 0.625em;
+}
+/* Soptunneikonen */
+.preview a.icon {
+
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    
+    top: 40%;
+	width: 60px;
+	font-size: 60px;
+}
+.shadowed {
+	opacity: 0.7;
+}
+
+.imageHolder{
+	position:relative;
+}
+
+/*-------------------------------
+	Undertext till bilder
+---------------------------------*/
+.imgcaption {
+	width: 100%;
+	margin: 0 auto;
+	font-style: italic;
+    box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    padding: 0.325em 0.325em 0.325em 0.625em;
+    background-color: #333333;
+    color: #EFEFEF;
+}
+
+/*--------------------------------
+	Progressbars
+----------------------------------*/
+.progressHolder{
+	width: 180px;
+	height: 12px;
+	background: grey;
+	margin: 0 auto;
+	margin-bottom: 10px;
+}
+.progress {
+	background: #33ccff;
+	width: 0px;
+	height: 12px;
+	
+	/* Animera progressbaren */
+	transition:width 2s;
+	-moz-transition:width 2s; /* Firefox 4 */
+	-webkit-transition:width 2s; /* Safari and Chrome */
+	-o-transition:width 2s; /* Opera */
+	
+}
+
+/*---------------------------------
+	TitleError
+----------------------------------*/
+.titleError{
+	border: 2px solid #FFD900;
+    margin-top: 40px;
+	padding: 10px;
+	position: relative;
+	max-width: 260px;
+    background: #424242;
+    color: #FFD900;
+}
+
+.titleError-arrow-border {
+	border-color:  transparent  transparent #FFD900 transparent;
+	border-style: solid;
+	border-width: 30px;
+	height: 0;
+	width: 0;
+	position:absolute;
+	bottom: 48px;
+	left: 20px;
+}
+.titleError-arrow {
+	border-color:  transparent  transparent #424242 transparent;
+	border-style: solid;
+	border-width: 30px;
+	height: 0;
+	width: 0;
+	position: absolute;
+	bottom: 46px;
+	left: 20px;
+}
+
+/*---------------------------------
+	nbrError
+----------------------------------*/
+.nbrError{
+	border: 2px solid #FFD900;
+	margin-top: 40px;
+	padding: 10px;
+	position: relative;
+	max-width: 150px;
+    left: 4px;
+    background-color: #424242;
+    color: #FFD900;
+}
+
+.nbrError-arrow-border {
+	border-color:  transparent  transparent #FFD900 transparent;
+	border-style: solid;
+	border-width: 30px;
+	height: 0;
+	width: 0;
+	position:absolute;
+	bottom: 48px;
+	left: 12px;
+}
+.nbrError-arrow {
+	border-color:  transparent  transparent #424242 transparent;
+	border-style: solid;
+	border-width: 30px;
+	height: 0;
+	width: 0;
+	position: absolute;
+	bottom: 46px;
+	left: 12px;
+}
+/*---------------------------------
+	instructionsError
+----------------------------------*/
+.instructionsError{
+	border: 2px solid #FFD900;
+	margin-top: 35px;
+	padding: 10px;
+	position: relative;
+	max-width: 230px;
+    background-color: #424242;
+    color: #FFD900;
+}
+
+.instructionsError-arrow-border {
+	border-color:  transparent  transparent #FFD900 transparent;
+	border-style: solid;
+	border-width: 30px;
+	height: 0;
+	width: 0;
+	position:absolute;
+	bottom: 48px;
+	left: 15px;
+}
+.instructionsError-arrow {
+	border-color:  transparent  transparent #424242 transparent;
+	border-style: solid;
+	border-width: 30px;
+	height: 0;
+	width: 0;
+	position: absolute;
+	bottom: 46px;
+	left: 15px;
+}
+/*---------------------------------
+	setError   
+----------------------------------*/
+.setError {
+	border: 2px solid #FFD900;
+	margin-top: 15px;
+	margin-bottom: 5px;
+	padding: 10px;
+	position: relative;
+	max-width: 230px;
+    background-color: #424242;
+    color: #FFD900;
+}
+
+.setError-arrow-border {
+	border-color:  transparent  transparent #FFD900 transparent;
+	border-style: solid;
+	border-width: 30px;
+	height: 0;
+	width: 0;
+	position:absolute;
+	bottom: 48px;
+	left: 15px;
+}
+.setError-arrow {
+	border-color:  transparent  transparent #424242 transparent;
+	border-style: solid;
+	border-width: 30px;
+	height: 0;
+	width: 0;
+	position: absolute;
+	bottom: 46px;
+	left: 15px;
+}
