@@ -1,0 +1,184 @@
+/*--------------------------------------------
+	
+	global.css - hanterar globala designattribut
+	
+ --------------------------------------------*/
+/* Färgpalett "Sa Barca de Formentera"
+#333333
+#424242
+#00CCD6
+#EFEFEF
+#FFD900
+*/
+/*--------------------------------------------
+	Importera Sosa - ikonfont
+ --------------------------------------------*/
+@font-face {
+	font-family: "Sosa";
+	src: 	url('/assets/fonts/sosa.svg') format('svg'),
+			url(/assets/fonts/sosa.woff);
+}
+
+/*--------------------------------------------
+	Snygga ikoner från Sosa-fontet
+ --------------------------------------------*/
+.icon {
+	font-family: 'Sosa', sans-serif;
+	font-size: 1.5em; /* 30px/20px = 1.5em*/
+	color: #EFEFEF;	/* "Sosa"-färgen: #669999 */
+	text-decoration: none;
+}
+
+/*--------------------------------------------
+	Importera inconsolata - kodfont
+ --------------------------------------------*/
+@font-face {
+	font-family: "Incosolata";
+	src: 	url(/assets/fonts/Inconsolata.otf);
+}
+
+/*-------------------------------------------------
+	Ge en liten tint till bakgrunden
+---------------------------------------------------*/
+
+/*-------------------------------------------------
+	Ta bort Chromes dumheter kring number-input 
+---------------------------------------------------*/
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=text],
+input[type=number],
+textarea {
+    -moz-appearance: textfield;
+    -webkit-appearance: none;
+    border: none;
+    resize: none;
+    outline: none;
+}
+
+/*--------------------------------------------
+	Roboto Thin som font
+ --------------------------------------------*/
+* {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    font-size: 100%;
+}
+
+/*---------------------------------
+	Hyperlänkar och rubriker
+ -----------------------------------*/
+a, h {
+	color: #00CCD6;
+	cursor: pointer;	/* Så att de verkar klickbara även om de ej har href="#" */
+}
+
+a:hover {
+	color: #FFD900;
+}
+
+
+/*--------------------------------------------
+	Sidebar
+----------------------------------------------*/
+#sidebar {
+    min-width: 25em;
+    max-width: 43.75em;
+    
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    -webkit-flex-direction: row;
+    
+    margin: 0 auto;
+    
+    box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+#tools {
+    box-shadow: 0em 0.11875em 0.11875em #888888;
+    font-size: 1.20em;
+    
+    background-color: #333333;
+    
+    margin: 0em 0em 0em auto;
+    padding: 0.625em 0.625em 0.625em 0.625em;
+    
+    min-width: 10.416666667em;   /* = 12.5/1.20 */
+    max-width: 18.229166667em;  /* = 21.875/1.20 */
+    
+    /* När tools är en ul och ej table */
+    list-style: none;
+    
+    box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+#changeNbrOfPersons ul {
+    list-style: none;
+}
+
+nav {
+    width: auto;
+    min-width: 11.875em;
+    max-width: 21.25em;
+    
+    margin-right: 0.625em;
+
+    box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+nav ul li a {
+    display: block;
+    
+    width: 100%;
+    padding-left: 0.625em;
+    padding-right: 0.625em;
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+    
+    margin-bottom: 0.625em;
+    margin-top: 0;
+	margin-right: 0.625em;
+    
+    font-size: 1.875em;
+    
+    box-shadow: 0em 0.04em 0.04em #888888;
+    
+    color: #EFEFEF;
+    background-color: #424242;
+    text-decoration: none;
+    
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+
+nav ul {
+    min-width: 100%;
+    list-style-type: none;
+    padding: 0 0 0 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+nav a:hover {
+    background-color:  #FFD900;
+    color: #333333;
+}
+
+.error {
+	color: red;
+	font-family: 'Inconsolata', sans-serif;
+}
