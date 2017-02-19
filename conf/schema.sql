@@ -59,7 +59,7 @@ CREATE TABLE `Recipes` (
   `Intro` text,
   `Instructions` text NOT NULL,
   `NbrOfPersons` int(11) NOT NULL,
-  `DateCreated` datetime NOT NULL,
+  `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `DateUpdated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`P_id`),
   UNIQUE KEY `Title` (`Title`)
