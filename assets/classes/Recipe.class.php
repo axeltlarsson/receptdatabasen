@@ -371,10 +371,10 @@ class Recipe
 	{
 
 		// Variabler till att koppla upp mot databasen
-		$dataBaseName = 'receptdatabasen';
-		$user = 'receptdatabasen';
-		$host = 'localhost';
-		$password = '9+a*/kjN%mO2bV8cZ:lJS?bK9ID7wd+k';
+		$dataBaseName = '';
+		$user = '';
+		$host = '';
+		$password = '';
 
 		try {
 			// Kolla att receptet har ett id
