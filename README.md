@@ -7,13 +7,13 @@ A simple CRUD web app for storing recipes. Useful to maintain your favourite rec
 
 ## Configuration
 * You need a web server serving the "app", I use nginx with the configuration
-provided in [conf/nginx.conf](conf/nginx.conf) (edit it to work with your domain and root).
+provided in [src/conf/nginx.conf](src/conf/nginx.conf) (edit it to work with your domain and root).
 * You need to change some constants as appropriate in the following files:
   * assets/includes/global.inc.ph
   * assets/deleteImage.php
   * assets/classes/Image.class.php
   * assets/includes/global.inc.php
-* To set up the db, use the schema dump in [conf/schema.sql](conf/schema.sql). Alternatively, manually create the following tables:
+* To set up the db, use the schema dump in [src/conf/schema.sql](src/conf/schema.sql). Alternatively, manually create the following tables:
   ```
   +---------------------------+
   | Gallery                   |

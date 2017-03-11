@@ -1,0 +1,23 @@
+version: '2'
+
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - ./code:/code
+      - ./site.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - code-net
+  php:
+    image: php:5-fpm
+    volumes:
+      - ./code:/code
+      - /.log.conf:/usr/local/etc/php-fpm.d/zz-log.conf
+    networks:
+      - code-net
+networks:
+  code-net:
+    driver: bridge
+
