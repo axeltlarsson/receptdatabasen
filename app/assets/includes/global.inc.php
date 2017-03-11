@@ -18,10 +18,13 @@ error_reporting(E_ALL);
  */
 function logger($message)
 {
-	$logFile = $_ENV["LOG_FILE_PATH"];
-	$fileHandle = fopen($logFile, 'a');
+	// $logFile = $_ENV["LOG_FILE_PATH"];
+	// $fileHandle = fopen($logFile, 'a');
+        date_default_timezone_set('Europe/Stockholm');
 	$dateString = date("d-m-y H:i:s_");
-	fwrite($fileHandle, $dateString.$message."\n");
+        echo $dateString.$message."\n";
+        error_log($dateString.$message);
+	// fwrite($fileHandle, $dateString.$message."\n");
 }
 
 /**
@@ -48,7 +51,12 @@ function connectToDb() {
 		return $db;
 
 	} catch (PDOException $e) {
+                error_log("DB_PASSWORD: " . $password);
+                error_log("PDOEXCEPTION!!! " . $e->getMessage());
 		logger($e->getMessage());
+                logger("databaseName: " . $dataBaseName);
+                logger("user: " . $user);
+                logger("host: " . $host);
 	}
 
 }

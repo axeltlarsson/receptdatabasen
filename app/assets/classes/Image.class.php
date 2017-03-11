@@ -9,7 +9,7 @@
 class Image
 {
 	/**
-	 *	Privata variabler
+         *	Privata variabler
 	 *
 	 *	@var string $_caption	 - bildtext
 	 *	@var string	$_path		 - filsökväg för filen
@@ -27,7 +27,7 @@ class Image
 	 *
 	 *	@var const string $UPLOAD_DIR
 	 */
-	const UPLOAD_DIR = '../uploaded_images/';	// ska vara '../uploaded_images/'
+	const UPLOAD_DIR = '$_ENV["IMAGE_UPLOAD_PATH"]';
 
 	/**
 	 *	Konstruktör - tar emot bilden i base64 eller som filsökväg

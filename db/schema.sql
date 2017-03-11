@@ -74,7 +74,6 @@ CREATE TABLE `Recipes` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`receptdatabasen`@`localhost`*/ /*!50003 TRIGGER Recipes_insert BEFORE INSERT ON `Recipes` FOR EACH ROW SET NEW.DateCreated = NOW() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
