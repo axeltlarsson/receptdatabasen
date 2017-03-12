@@ -2,7 +2,7 @@ version: "3"
 
 services:
   vhost:
-    container_name: receptdatasen_vhost
+    container_name: receptdatabasen_vhost
     image: nginx:latest
     restart: unless-stopped
     volumes:
