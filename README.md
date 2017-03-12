@@ -6,7 +6,7 @@ A simple CRUD web app for storing recipes. Useful to maintain your favourite rec
 **Warning: no authentication is provided in the app - use HTTP Basic Auth in your web server config**
 
 ## Docker-compose setup
-The default configuration is for development.
+The default configuration is for development. It uses [./nginx.conf](./nginx.conf).
 
 `docker-compose up`
 
@@ -24,6 +24,8 @@ and letsencrypt.
 
 `docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d`
 
+For production, [./nginx.prod.conf](./nginx.prod.conf) is used and you will want to edit the included auth file which
+is just an example setup with username "user" and password "password".
 Then connect your nginx reverse proxy to the network created:
 `docker network connect receptdatasen_front nginx-proxy`
 (replace nginx-proxy with container name of your nginx reverse proxy).

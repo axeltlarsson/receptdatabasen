@@ -4,7 +4,11 @@ services:
   vhost:
     ports:
       - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
   app:
     environment:
       SQL_PASSWORD: "${DB_PASSWORD:-password}"
-
+  db:
+    environment:
+      MYSQL_ROOT_PASSWORD: "password"

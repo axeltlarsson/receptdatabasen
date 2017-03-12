@@ -7,7 +7,6 @@ services:
     restart: unless-stopped
     volumes:
       - ./app:/app:ro
-      - ./site.conf:/etc/nginx/conf.d/default.conf:ro
       - data-volume:/data:ro
     networks:
       - front
