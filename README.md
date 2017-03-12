@@ -5,15 +5,23 @@ A simple CRUD web app for storing recipes. Useful to maintain your favourite rec
 
 **Warning: no authentication is provided in the app - use HTTP Basic Auth in your web server config**
 
-## Configuration
+## Docker-compose setup
+`docker-compose up`
+
+This is the easisest way, it sets up the app, db and vhost containers allowing access on port `8080`.
+It sets up an empty database by default, from [db/schema.sql](db/schema.sql). The database is saved
+in a named volume so it persists the data unless you specifically remove the `db-volume`. The images
+are uploaded to another named volume `db-data`.
+
+## Manual setup
 * You need a web server serving the "app", I use nginx with the configuration
-provided in [src/conf/nginx.conf](src/conf/nginx.conf) (edit it to work with your domain and root).
+provided in [app/conf/nginx.conf](app/conf/nginx.conf) (edit it to work with your domain and root).
 * You need to change some constants as appropriate in the following files:
   * assets/includes/global.inc.ph
   * assets/deleteImage.php
   * assets/classes/Image.class.php
   * assets/includes/global.inc.php
-* To set up the db, use the schema dump in [src/conf/schema.sql](src/conf/schema.sql). Alternatively, manually create the following tables:
+* To set up the db, use the schema dump in [app/conf/schema.sql](app/conf/schema.sql). It sets up the following tables:
   ```
   +---------------------------+
   | Gallery                   |
