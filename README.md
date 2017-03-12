@@ -6,6 +6,8 @@ A simple CRUD web app for storing recipes. Useful to maintain your favourite rec
 **Warning: no authentication is provided in the app - use HTTP Basic Auth in your web server config**
 
 ## Docker-compose setup
+`export DB_PASSWORD=password`
+
 `docker-compose up`
 
 This is the easisest way, it sets up the app, db and vhost containers allowing access on port `8080`.
