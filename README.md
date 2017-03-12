@@ -16,11 +16,7 @@ are uploaded to another named volume `db-data`.
 ## Manual setup
 * You need a web server serving the "app", I use nginx with the configuration
 provided in [app/conf/nginx.conf](app/conf/nginx.conf) (edit it to work with your domain and root).
-* You need to change some constants as appropriate in the following files:
-  * assets/includes/global.inc.ph
-  * assets/deleteImage.php
-  * assets/classes/Image.class.php
-  * assets/includes/global.inc.php
+* You need to change some environment variables, see [app/.env](app/.env).
 * To set up the db, use the schema dump in [app/conf/schema.sql](app/conf/schema.sql). It sets up the following tables:
   ```
   +---------------------------+
