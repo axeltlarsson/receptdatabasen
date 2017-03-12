@@ -10,7 +10,7 @@ The default configuration is for development.
 
 `docker-compose up`
 
-This is the easisest way, it sets up the app, db and vhost containers allowing access on port `8080`.
+This is the easiest way, it sets up the app, db and vhost containers allowing access on port `8080`.
 It sets up an empty database by default, from [db/schema.sql](db/schema.sql). The database is saved
 in a named volume so it persists the data unless you specifically remove the `db-volume`. The images
 are uploaded to another named volume `db-data`.
