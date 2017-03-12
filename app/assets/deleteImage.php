@@ -15,7 +15,7 @@ try {
 		// Kolla att filen är läsbar och existerar
 		if (is_readable($path)) {
 			// radera den från disk
-			unlink($_ENV["IMAGE_UPLOAD_PATH"] . $baseName);
+			unlink($_ENV["IMAGE_UPLOAD_PATH"] . "/" . $baseName);
 		} else { // filen är ej läsbar
 			throw new Exception("deleteImage.php: filen är ej läsbar och går ej att radera.");
 		}

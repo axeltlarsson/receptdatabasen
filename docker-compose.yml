@@ -1,48 +1,54 @@
-version: '2'
+version: "3"
 
 services:
-  recipe:
-    container_name: recipe
+  vhost:
+    container_name: receptdatasen_vhost
     image: nginx:latest
     restart: unless-stopped
     ports:
       - "8080:80"
     volumes:
-      - ./app:/app
-      - ./site.conf:/etc/nginx/conf.d/default.conf
+      - ./app:/app:ro
+      - ./site.conf:/etc/nginx/conf.d/default.conf:ro
+      - data-volume:/data:ro
     networks:
-      - recipe-net
-  recipe-php:
-    container_name: recipe-php
+      - front
+      - back
+  app:
     build: ./app
     restart: unless-stopped
     volumes:
-      - ./app:/app
-      - ./log.conf:/usr/local/etc/php-fpm.d/zz-log.conf
+      - ./app:/app:ro
+      - ./log.conf:/usr/local/etc/php-fpm.d/zz-log.conf:ro
+      - data-volume:/data
     environment:
-      LOG_FILE_PATH: /app/logs/log.txt
+      LOGGING_PATH: /data/logs
       BASE_PATH: /app/
-      IMAGE_UPLOAD_PATH: /app/images
-      SQL_HOST: recipe-mysql
+      IMAGE_UPLOAD_PATH: /data/images
+      SQL_HOST: db
       SQL_DB: recipes
       SQL_USER: recipe
       SQL_PASSWORD: "${DB_PASSWORD}"
     networks:
-      - recipe-net
-  recipe-mysql:
-    container_name: recipe-mysql
+      - back
+  db:
     build: ./db
     restart: unless-stopped
     volumes:
-      - "${DB_STORAGE_PATH}:/var/lib/mysql"
+      - db-volume:/var/lib/mysql
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
       MYSQL_DATABASE: recipes
       MYSQL_USER: recipe
       MYSQL_PASSWORD: "${DB_PASSWORD}"
     networks:
-      - recipe-net
+      - back
+volumes:
+  db-volume:
+  data-volume:
 networks:
-  recipe-net:
+  back:
+    driver: bridge
+  front:
     driver: bridge
 

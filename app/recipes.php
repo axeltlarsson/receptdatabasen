@@ -18,7 +18,7 @@
 
 </head>
 	<body>
-        <div id="container">            
+        <div id="container">
             <div id="list">
 
             <?php // visar receptlistan
@@ -27,7 +27,7 @@
                 -------------------------------------------------*/
                 $db = connectToDb();
 
-                try {	
+                try {
                     // Förbered SQL-statement
                     $getRecipes = $db->prepare("SELECT Title, DateCreated, DateUpdated FROM Recipes");
 
@@ -58,7 +58,7 @@
                                     echo '</td>';
                                 echo '</tr>';
                             }
-                    
+
                             // #widener används för få bredden på #list alltid till samma även när man har sökt på recept och träffarna har korta titlar
                             echo '<tr id="widener"><td data-date-created="1869-09-01 23:45:01" data-date-updated="1869-09-01 23:45:01">Widener Widener Widener Widener Widener Widener Widener Widener Widener Widener Widener Widener Widener Widener Widener Widener Widener Widener Widener Widener Widener</td></tr>';
                         echo '</tbody>';
@@ -76,7 +76,7 @@
 
             <!-- Lägger till menyn (#sidebar) -->
             <div id="sidebar">
-                <?php require './assets/includes/nav.php'; ?> 
+                <?php require './assets/includes/nav.php'; ?>
 
                 <ul id="tools">
                     <li id="search">
@@ -130,6 +130,6 @@
 
                 </div>
         </div>
-		
+
 	</body>
 <html>
