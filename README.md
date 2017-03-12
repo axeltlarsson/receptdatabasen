@@ -24,8 +24,8 @@ and letsencrypt.
 
 `docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d`
 
-For production, [./nginx.prod.conf](./nginx.prod.conf) is used and you will want to edit the included auth file which
-is just an example setup with username "user" and password "password".
+For production, [./nginx.prod.conf](./nginx.prod.conf) is used and you will want to create a ".htpasswd" file.
+
 Then connect your nginx reverse proxy to the network created:
 `docker network connect receptdatasen_front nginx-proxy`
 (replace nginx-proxy with container name of your nginx reverse proxy).
