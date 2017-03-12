@@ -6,7 +6,7 @@ A simple CRUD web app for storing recipes. Useful to maintain your favourite rec
 **Warning: no authentication is provided in the app - use HTTP Basic Auth in your web server config**
 
 ## Docker-compose setup
-`export DB_PASSWORD=password`
+The default configuration is for development.
 
 `docker-compose up`
 
@@ -14,6 +14,19 @@ This is the easisest way, it sets up the app, db and vhost containers allowing a
 It sets up an empty database by default, from [db/schema.sql](db/schema.sql). The database is saved
 in a named volume so it persists the data unless you specifically remove the `db-volume`. The images
 are uploaded to another named volume `db-data`.
+
+### Production
+`export DB_PASSWORD=password`
+It will be used for internal authenctaion between app and db.
+
+`export VIRTUAL_HOST=<my (sub) domain name>` and `export EMAIL=<my email>` - used for nginx reverse proxy
+and letsencrypt.
+
+`docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d`
+
+Then connect your nginx reverse proxy to the network created:
+`docker network connect receptdatasen_front nginx-proxy`
+(replace nginx-proxy with container name of your nginx reverse proxy).
 
 ## Manual setup
 * You need a web server serving the "app", I use nginx with the configuration

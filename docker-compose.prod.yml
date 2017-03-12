@@ -1,0 +1,8 @@
+version: "3"
+
+services:
+  vhost:
+    environment:
+      VIRTUAL_HOST: "${VIRTUAL_HOST}"
+      LETSENCRYPT_HOST: "${VIRTUAL_HOST}"
+      LETSENCRYPT_EMAIL: "${EMAIL}"

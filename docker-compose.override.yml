@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  vhost:
+    ports:
+      - "8080:80"
+  app:
+    environment:
+      SQL_PASSWORD: "${DB_PASSWORD:-password}"
+
