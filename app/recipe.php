@@ -40,6 +40,9 @@ require_once 'assets/includes/global.inc.php';
                 /*---------------------------------------
                     Ladda in receptet från databasen
                 ----------------------------------------*/
+                use League\CommonMark\CommonMarkConverter;
+                $markdown = new CommonMarkConverter();
+
                 if(!$recipe = loadRecipe($title)) {
                     // om det gick snett
                     header("HTTP/1.0 404 Not Found");
@@ -53,7 +56,7 @@ require_once 'assets/includes/global.inc.php';
                 echo '<div id="title">' . $recipe->getTitle() . '</div>';
 
                 // Inledning
-                echo '<div id="intro">' . $recipe->getIntro() . '</div>';
+                echo '<div id="intro">' . $markdown->convertToHtml($recipe->getIntro()) . '</div>';
 
                     // Ingredienser
                     echo '<div id="ingredientsDiv">';
@@ -71,7 +74,7 @@ require_once 'assets/includes/global.inc.php';
                 // Instruktioner
                 echo '<div id="instructionsDiv">';
                     echo '<h3>Instruktioner</h3>';
-                    echo '<div id="instructions">' . $recipe->getInstructions() . '</div>';
+                    echo '<div id="instructions">' . $markdown->convertToHtml($recipe->getInstructions()) . '</div>';
                 echo '</div>';
 
                 // Taggar

@@ -15,7 +15,7 @@ services:
     build: ./app
     restart: unless-stopped
     volumes:
-      - ./app:/app:ro
+      - ./app:/app
       - ./log.conf:/usr/local/etc/php-fpm.d/zz-log.conf:ro
       - data-volume:/data
     environment:
