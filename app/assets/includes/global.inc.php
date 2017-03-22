@@ -8,6 +8,7 @@ require_once $_ENV["BASE_PATH"] . 'assets/classes/Recipe.class.php';
 require_once $_ENV["BASE_PATH"] . 'assets/classes/Set.class.php';
 require_once $_ENV["BASE_PATH"] . 'assets/classes/Image.class.php';
 require_once $_ENV["BASE_PATH"] . 'assets/classes/Tag.class.php';
+require_once $_ENV["BASE_PATH"] . 'assets/classes/TwitterHandlerParser.php';
 error_reporting(E_ALL);
 /*------------------------
         Funktioner

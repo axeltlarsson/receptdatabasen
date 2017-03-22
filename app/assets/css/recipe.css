@@ -1,5 +1,5 @@
 /*-----------------------------------
-	CSS-fil för recipe.php
+CSS-fil för recipe.php
 ------------------------------------*/
 /* Färgpalett "Sa Barca de Formentera"
 #333333
@@ -7,348 +7,409 @@
 #00CCD6
 #EFEFEF
 #FFD900
-*/
+ */
+
+* {
+  * box-sizing: border-box;
+}
 
 /*-------------------------------
-	Dela upp sidan i två kolumner
+Dela upp sidan i två kolumner
 -------------------------------*/
 #recipe_center { /* Hack för att får centerard utan att behöva ange bredd */
-    margin: auto;
-    display: table;
+  margin: auto;
+  display: table;
 }
 
 #recipe_container {
-    margin: 0px auto;
-    padding-left: 0.625em;
-    padding-right: 0.625em;
-    
-    max-width: 120.375em;
-    min-width: 51.625em;
-    
-    display: flex;
-    display: -webkit-flex;
-    
-    flex-direction: row;
-    flex-direction: -webkit-row;
-    
-    box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
+  margin: 0px auto;
+  padding-left: 0.625em;
+  padding-right: 0.625em;
+
+  max-width: 120.375em;
+  min-width: 51.625em;
+
+  display: flex;
+  display: -webkit-flex;
+
+  flex-direction: row;
+  flex-direction: -webkit-row;
+
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
 }
 
 main {
-    max-width: 75em;
-    min-width: 25em;
-    
-    padding-right: 1.25em;
-    padding-left: 1.25em;
-    
-    margin-right: 1.625em;
-    
-    order: 1;
-    -webkit-order: 1;
-    flex-shrink: 3.236;
-    
-    height: 100%;
-    
-    background-color: #333333;
-    box-shadow: 0em 0.11875em 0.11875em #888888;
-    
-    box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
+  max-width: 75em;
+  min-width: 25em;
+
+  padding-right: 1.25em;
+  padding-left: 1.25em;
+
+  margin-right: 1.625em;
+
+  order: 1;
+  -webkit-order: 1;
+  flex-shrink: 3.236;
+
+  height: 100%;
+
+  background-color: #333333;
+  box-shadow: 0em 0.11875em 0.11875em #888888;
+
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
 }
 
 #recipe_right {
-    min-width: 25em;
-    max-width: 43.75em;
-    height: 100%;
-    
-    order: 2;
-    -webkit-order: 2;
-    flex-shrink: 3;
-    
-    box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
+  min-width: 25em;
+  max-width: 43.75em;
+  height: 100%;
+
+  order: 2;
+  -webkit-order: 2;
+  flex-shrink: 3;
+
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
 }
 
 /*-------------------------------
-        Mobile
+Mobile
 --------------------------------*/
-@media (max-width: 200px) {
-    #recipe_container {
-        flex-direction: column-reverse;
-        -webkit-flex-direction: column-reverse;
-    }
-    
-    #recipe_right {
-        margin: auto;
-    }
+@media (max-width: 800px) {
+  #recipe_container {
+    flex-direction: column-reverse;
+    -webkit-flex-direction: column-reverse;
+  }
+
+  #recipe_right {
+    margin: auto;
+  }
 
 }
 
 /*-------------------------------
-	Generella marginaler mellan 
-	divs
+Generella marginaler mellan
+divs
 -------------------------------*/
 #intro,
 #ingredientsDiv,
 #instructionsDiv,
 #tagsDiv {
-	padding-bottom: 1.875em;
+  padding-bottom: 1.875em;
+  max-width: 75ch; /* approximate 75 characters width */
+}
+
+#instructions h1,
+#instructions h2,
+#instructions h3,
+#instructions h4 {
+  color: #FFD900;
+}
+
+#instructionsDiv img {
+  max-width: 500px;
+}
+
+#instructions ol li p {
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+
+#instructions ol li {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+ol {
+  list-style-type: none;
+  list-style-type: decimal !ie; /*IE 7- hack*/
+
+  margin: 0;
+  margin-left: 3em;
+  padding: 0;
+
+  counter-reset: li-counter;
+}
+ol > li {
+  position: relative;
+  margin-bottom: 20px;
+  padding-left: 0.5em;
+  min-height: 3em;
+  border-left: 2px solid #CCCCCC;
+}
+ol > li:before {
+  position: absolute;
+  top: 0;
+  left: -1em;
+  width: 0.8em;
+
+  font-size: 3em;
+  line-height: 1;
+  font-weight: bold;
+  text-align: right;
+  color: #464646;
+
+  content: counter(li-counter);
+  counter-increment: li-counter;
 }
 
 /* -----------------------------
-	titleDiv
+titleDiv
 --------------------------------*/
 #title {
-	font-size: 3.75em;
-    margin-bottom: 0.625em;
-    color: #FFD900;
+  font-size: 3.75em;
+  margin-bottom: 0.625em;
+  color: #FFD900;
 }
 
 /*-------------------------------
-	intro
+intro
 --------------------------------*/
 #intro {
-	font-style: italic;
-    color: #EFEFEF;
+  font-style: italic;
+  color: #EFEFEF;
 }
 
 /*--------------------------------
-	ingredientsDiv
+ingredientsDiv
 --------------------------------*/
 .setHeading {
-	color: #00CCD6;
-	padding-bottom: 0.625em;
-	padding-left: 0.625em;
+  color: #00CCD6;
+  padding-bottom: 0.625em;
+  padding-left: 0.625em;
 }
 
 .set {
-    min-width: 12.5em;
-    
-    margin: 0 auto;
-	margin-top: 0.625em;
-	margin-bottom: 1.25em;
-	margin-right: 0.625em;
-	padding: 0.625em 0.625em 0.625em 0;
-    
-    float: left;
-    
-    background-color: #424242;
-    color: #EFEFEF;
-   /* box-shadow: 0em 0.11875em 0.11875em white;*/
+  min-width: 12.5em;
+
+  margin: 0 auto;
+  margin-top: 0.625em;
+  margin-bottom: 1.25em;
+  margin-right: 0.625em;
+  padding: 0.625em 0.625em 0.625em 0;
+
+  float: left;
+
+  background-color: #424242;
+  color: #EFEFEF;
+  /* box-shadow: 0em 0.11875em 0.11875em white;*/
 }
 
 #ingredientsDiv ul {
-	list-style-type: none;
-	padding-left: 0.625em;
-    font-size: 1.125em;
+  list-style-type: none;
+  padding-left: 0.625em;
+  font-size: 1.125em;
 
 }
 
 /*--------------------------------
-	instructionsDiv
+instructionsDiv
 --------------------------------*/
 
 /* Word wrap av instructions */
 #instructions {
-	white-space: pre-wrap;
-    color: #EFEFEF;
+  white-space: pre-wrap;
+  color: #EFEFEF;
 }
 
 #instructionsDiv h3 {
-	clear: both;
-	color: #00CCD6;
-	display: block;
-	font-size: 1.875em;
+  clear: both;
+  color: #00CCD6;
+  display: block;
+  font-size: 1.875em;
 }
 
 /*-----------------------------------------
-	tagsDiv
+tagsDiv
 -------------------------------------------*/
 .icon {
-	padding-right: 5px;
+  padding-right: 5px;
 }
 .tag {
-	padding-right: 0.625em;
-    color: #EFEFEF;
+  padding-right: 0.625em;
+  color: #EFEFEF;
 }
 
 /*-------------------------------------------
-	gallery
+gallery
 --------------------------------------------*/
 #gallery {
-	margin-top: 1.875em;
-    clear: left;
+  margin-top: 1.875em;
+  clear: left;
 }
 
 /* Enkapsulerar varje bild + ev. bildtext */
 .previewPic {
-	margin-bottom: 1.25em;
-	display: block;
-	position: relative;
-	overflow: hidden;
-	padding-bottom: 0;
-    
+  margin-bottom: 1.25em;
+  display: block;
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 0;
+
 }
 
 /* Placera en indikator så att man vet att det finns en bildtext */
 .previewPic:before {
-	/* Gör ett frågetecken i en cirkel */
-	content: '?';
-	position: absolute;
-	background: rgba(255,255,255,0.75);
-	color: black;
-	width: 1.5em;
-	height: 1.5em;
-	border-radius: 0.75em;
-	opacity: 0.75;
-	
-	/* Trixa så att frågetecknet hamnar i mitten */
-	text-align: center;
-	font-size: 1em;	
-	line-height: 1.625;
-	
-	-webkit-transition: all 0.6s ease;
-	-moz-transition: 	all 0.6s ease;
-	-o-transition:		all 0.6s ease;
-	
-	/* Positionera det i nedre vänstra hörnet */
-	bottom: 0.9375em;
-	left: 0.625em;
+  /* Gör ett frågetecken i en cirkel */
+  content: '?';
+  position: absolute;
+  background: rgba(255,255,255,0.75);
+  color: black;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 0.75em;
+  opacity: 0.75;
+
+  /* Trixa så att frågetecknet hamnar i mitten */
+  text-align: center;
+  font-size: 1em;
+  line-height: 1.625;
+
+  -webkit-transition: all 0.6s ease;
+  -moz-transition:        all 0.6s ease;
+  -o-transition:          all 0.6s ease;
+
+  /* Positionera det i nedre vänstra hörnet */
+  bottom: 0.9375em;
+  left: 0.625em;
 }
 
 /* Gömmer frågetecknet när man hovrar för att se bildtext */
 .previewPic:hover:before {
-	opacity: 0;
+  opacity: 0;
 }
 
 /* Denna klass tar bort frågetecknet - läggs till av jQuery för de bilder utan bildtext */
 .noCaption:before {
-	content: "";
-	opacity: 0;
+  content: "";
+  opacity: 0;
 }
 
 /* Själva bilden */
 .previewPic img {
-	max-width: 100%;
-    box-shadow: 0em 0.11875em 0.11875em #888888;
+  max-width: 100%;
+  box-shadow: 0em 0.11875em 0.11875em #888888;
 }
 
 /* Bildtext */
 .previewPic figcaption {
-	/* Själva texten */
-	font-size: 0.9375em;
-	color: white;
-	
-	/* Position och storlek */
-	position: absolute;
-	width: 100%;	
-	bottom: 1em;
-	left: -100%;
-	padding: 0.325em 1.25em 0.325em 1.25em;
-	
-	/* En snygg halvtransparent svart bakgrund till bildtexten */
-	background: rgba(0,0,0,0.75);
-	
-	/* Dölj bildtexten */
-	opacity: 0;
-	
-	/* Animera ingång av bildtext */
-	-webkit-transition: all 0.6s ease;
-	-moz-transition: 	all 0.6s ease;
-	-o-transition: 		all 0.6s ease;
+  /* Själva texten */
+  font-size: 0.9375em;
+  color: white;
+
+  /* Position och storlek */
+  position: absolute;
+  width: 100%;
+  bottom: 1em;
+  left: -100%;
+  padding: 0.325em 1.25em 0.325em 1.25em;
+
+  /* En snygg halvtransparent svart bakgrund till bildtexten */
+  background: rgba(0,0,0,0.75);
+
+  /* Dölj bildtexten */
+  opacity: 0;
+
+  /* Animera ingång av bildtext */
+  -webkit-transition: all 0.6s ease;
+  -moz-transition:        all 0.6s ease;
+  -o-transition:          all 0.6s ease;
 }
 
 /* Visa bildtexten när man hovrar över bilden */
 .previewPic:hover figcaption {
-	opacity: 1;
-	left: 0;
+  opacity: 1;
+  left: 0;
 }
 
 /*-----------------------------------------
-	missingPic
+missingPic
 -----------------------------------------*/
 /* TODO */
 .missingPic .icon {
-	font-size: 60px;
-	color: red;
-    height: 100px;
-    width: 100px;
-    margin: auto;
-    vertical-align: middle;
+  font-size: 60px;
+  color: red;
+  height: 100px;
+  width: 100px;
+  margin: auto;
+  vertical-align: middle;
 }
 .missingPic {
-	border: 1px solid grey;
-	height: 29.125em;
-	width: 43.625em;
+  border: 1px solid grey;
+  height: 29.125em;
+  width: 43.625em;
 }
 .missing {
-	text-align: center;
+  text-align: center;
 }
 
 /*--------------------------------------
-	restoreDeletedRecipe
+restoreDeletedRecipe
 --------------------------------------*/
 #restoreDeletedRecipe {
-    color: #FFD900;
-    background-color: #333333;
-	max-width: 17.5em;
-	padding: 0.625em 0.625em 0.625em 0.625em;
-	
-	/* Positionering */
-	margin: 0 auto;
-	
+  color: #FFD900;
+  background-color: #333333;
+  max-width: 17.5em;
+  padding: 0.625em 0.625em 0.625em 0.625em;
+
+  /* Positionering */
+  margin: 0 auto;
+
 }
 /* Flytta ner de båda svaren (ångra, nej) till nästa rad */
 #restoreDeletedRecipe #answer {
-	clear: both;
-	display: block;
-	margin-top: 1.625em;
+  clear: both;
+  display: block;
+  margin-top: 1.625em;
 }
 
 #nej {
-    margin-left: 2em;
+  margin-left: 2em;
 }
 
 #ja,
 #nej {
-    padding: 0.625em 0.625em 0.625em 0.625em;
-    background-color: #424242;
-    color: #EFEFEF;
+  padding: 0.625em 0.625em 0.625em 0.625em;
+  background-color: #424242;
+  color: #EFEFEF;
 }
 
 #ja:hover,
 #nej:hover {
-    background-color: #FFD900;
-    color: #333333;
+  background-color: #FFD900;
+  color: #333333;
 }
 
 
 /**-----------------------------------------
-	changeNbfOrPersons
+changeNbfOrPersons
 -------------------------------------------*/
 #nbrOfPersons {
-	width: 1.125em;
-    outline: 0;
-    border: none;
-    padding: 0.125em 0.125em 0.125em 0.125em;
-    background-color: #424242;
-    color: #EFEFEF;
+  width: 1.125em;
+  outline: 0;
+  border: none;
+  padding: 0.125em 0.125em 0.125em 0.125em;
+  background-color: #424242;
+  color: #EFEFEF;
 }
 
 #nbrOfPersons:focus,
 #changeNbrOfPersons:hover {
-    color: #FFD900;
+  color: #FFD900;
 }
 
 #changeNbrOfPersons,
 #changeNbrOfPersonsInput{
-    color: #00CCD6;
+  color: #00CCD6;
 }
 
 #tools ul {
-    list-style: none;
+  list-style: none;
 }

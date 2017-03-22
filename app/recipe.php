@@ -40,8 +40,13 @@ require_once 'assets/includes/global.inc.php';
                 /*---------------------------------------
                     Ladda in receptet från databasen
                 ----------------------------------------*/
-                use League\CommonMark\CommonMarkConverter;
-                $markdown = new CommonMarkConverter();
+                use League\CommonMark\DocParser;
+                use League\CommonMark\Environment;
+                use League\CommonMark\HtmlRenderer;
+                $environment = Environment::createCommonMarkEnvironment();
+                // $environment->addInlineParser(new TwitterHandlerParser());
+                $parser = new DocParser($environment);
+                $htmlRenderer = new HtmlRenderer($environment);
 
                 if(!$recipe = loadRecipe($title)) {
                     // om det gick snett
@@ -56,7 +61,9 @@ require_once 'assets/includes/global.inc.php';
                 echo '<div id="title">' . $recipe->getTitle() . '</div>';
 
                 // Inledning
-                echo '<div id="intro">' . $markdown->convertToHtml($recipe->getIntro()) . '</div>';
+                $introDoc = $parser->parse($recipe->getIntro());
+                $intro = $htmlRenderer->renderBlock($introDoc);
+                echo '<div id="intro">' . $intro  . '</div>';
 
                     // Ingredienser
                     echo '<div id="ingredientsDiv">';
@@ -72,9 +79,11 @@ require_once 'assets/includes/global.inc.php';
                 echo '</div>';
 
                 // Instruktioner
+                $instructionsDoc = $parser->parse($recipe->getInstructions());
+                $instructions = $htmlRenderer->renderBlock($instructionsDoc);
                 echo '<div id="instructionsDiv">';
                     echo '<h3>Instruktioner</h3>';
-                    echo '<div id="instructions">' . $markdown->convertToHtml($recipe->getInstructions()) . '</div>';
+                    echo '<div id="instructions">' . $instructions . '</div>';
                 echo '</div>';
 
                 // Taggar
