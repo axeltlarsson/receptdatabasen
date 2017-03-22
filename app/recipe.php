@@ -69,11 +69,11 @@ require_once 'assets/includes/global.inc.php';
                     echo '<div id="ingredientsDiv">';
                     foreach($recipe->getSets() as $set) {
                         echo '<div class="set"><div class="setHeading">' . $set->getName() . '</div>';
+                        echo '<ul>';
                         foreach($set->getIngredients() as $ingredient) {
-                            echo '<ul>';
-                                echo '<div class="ingredient"><li>' . $ingredient . '</li></div>';
-                            echo '</ul>';
+                                echo '<li class="ingredient">' . $ingredient . '</li>';
                         }
+                        echo '</ul>';
                         echo '</div>';
                     }
                 echo '</div>';
@@ -136,6 +136,7 @@ require_once 'assets/includes/global.inc.php';
                                 echo $e->getMessage();
                             }
                             // This is retarded
+                            // echo '<img src="' . $path . '">';
                             echo '<img src="data:image/jpeg;base64,' . base64_encode($thumbnail) . '" >';
                             if ($caption != "") { // om det finns caption
                                 echo '<figcaption>' . $caption .'</figcaption>';        // caption
