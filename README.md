@@ -24,6 +24,8 @@ and letsencrypt.
 
 `docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d`
 
+Then you might have to to do `docker exec -it receptdatasen_app_1 bash` and `composer install` in /app.
+
 For production, [./nginx.prod.conf](./nginx.prod.conf) is used and you will want to create a ".htpasswd" file.
 
 Then connect your nginx reverse proxy to the network created:
