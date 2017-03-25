@@ -101,7 +101,7 @@ titleDiv
 /*-------------------------------
 intro
 --------------------------------*/
-#intro p {
+#intro, #intro p {
   font-style: italic;
   color: #EFEFEF;
 }
