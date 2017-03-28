@@ -71,7 +71,7 @@ require_once 'assets/includes/global.inc.php';
                         echo '<div class="set"><div class="setHeading">' . $set->getName() . '</div>';
                         echo '<ul>';
                         foreach($set->getIngredients() as $ingredient) {
-                                echo '<li class="ingredient">' . $ingredient . '</li>';
+                                echo '<li data-original="' . $ingredient . '" class="ingredient">' . $ingredient . '</li>';
                         }
                         echo '</ul>';
                         echo '</div>';
