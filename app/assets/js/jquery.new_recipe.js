@@ -116,6 +116,39 @@ $(document).ready(function () {
   // Bind event handler
   $('#addTag').click(function () { addTag(); });
 
+
+  var selectors = {
+    receptfavoriter: {
+      title: '.header-1[itemprop=name]',
+      intro: '.recipe-description .legible',
+      instructions: '.recipe-preparation ol[itemprop=recipeInstructions]',
+      ingredients: '',
+      nbr_persons: ''
+    }
+  }
+
+  $('#auto-import').on('blur', function (e) {
+    var url = e.target.value;
+    console.log("attempt to import recipe from: ", url);
+    $.get(url, function (data) {
+      var site = new URL(url).hostname.split('.')[0];
+      var selector = selectors[site];
+      if (!selector) {
+        console.error("The site `" + site + "` is not supported");
+        return false;
+      }
+
+      ['title', 'intro', 'instructions'].forEach(function(prop) {
+        console.log(prop);
+        var propValue = $(data).find(selector[prop]).text().trim();
+        console.log(propValue);
+        $('#' + prop).val(propValue);
+      });
+
+    });
+
+  });
+
   /**----------------------------------------------------------------
                 Allmänt - ladda in grejor, fokusera etc. när sidan laddats
         -----------------------------------------------------------------*/

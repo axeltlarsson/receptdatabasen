@@ -75,6 +75,22 @@ main {
     -webkit-order: 2;
 }
 
+#auto-import {
+    padding-left: 0.125em;
+    padding-top: 0.125em;
+    padding-bottom: 0.125em;
+    
+    margin-top: 0.625em;
+	
+    font-size: 1.75em;
+	width: 100%;
+	color: #FFD900;
+    background-color: #424242;
+    
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
 /*--------------------------------------------
 	titleDiv 
  --------------------------------------------*/
