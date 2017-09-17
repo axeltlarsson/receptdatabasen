@@ -121,20 +121,28 @@ $(document).ready(function () {
     receptfavoriter: {
       title: '.header-1[itemprop=name]',
       intro: '.recipe-description .legible',
-      instructions: '.recipe-preparation ol[itemprop=recipeInstructions]',
+      instructions: 'li[itemprop=itemListElement]',
       ingredients: 'li[itemprop=recipeIngredient]',
-      nbr_persons: ''
+      nbr_persons: 'h3[itemprop=recipeYield]',
+      tags: '.tags.tag-label a'
     }
+    // ica: {
+      // title: '.recipepage__headline',
+      // intro: 'p.recipe-preamble',
+      // instructions: '#recipe-howto ol li',
+      // ingredients: '.ingredients__list__item',
+      // nbr_persons: '#currentPortions',
+      // tags: '.related-recipe-tags__container'
+
+    // }
   }
 
-  $('#auto-import').on('blur', function (e) {
+  $('#auto-import').on('change', function (e) {
     var url = e.target.value;
     if (!url)
       return false;
 
     $.get(url, function (data) {
-      console.groupCollapsed("Auto import recipe");
-      console.log("attempt to import recipe from: ", url);
       var site = new URL(url).hostname.split('.')[0];
       var selector = selectors[site];
       if (!selector) {
@@ -142,21 +150,43 @@ $(document).ready(function () {
         return false;
       }
 
-      ['title', 'intro', 'instructions'].forEach(function(prop) {
+      ['title', 'intro'].forEach(function(prop) {
         var propValue = $(data).find(selector[prop]).text().trim();
         $('#' + prop).val(propValue);
       });
 
-      $(data).find(selector['ingredients']).each(function (idx) {
+      $('#instructions').val('');
+      $(data).find(selector['instructions']).each(function (idx) {
+        var value = $(this).text().trim();
+        var old = $('#instructions').val();
+        var step =  (idx + 1) + '. ' + value + '\n';
+        $('#instructions').val(old + step);
+      });
+
+      $('.ingredients').remove();
+      $(data).find(selector['ingredients']).each(function(idx) {
         var ingredient = $(this);
         if (!ingredient)
           return false;
         $('input[name=ingredient]:last').val(ingredient.text().trim());
         addIngredient();
       });
+      $('.ingredients:last').remove();
+
+      var nbrPersons = $(data).find(selector['nbr_persons']).text().match(/\d+/)[0];
+      if (nbrPersons)
+        $('#nbrPersons').val(nbrPersons);
+
+      $(data).find(selector['tags']).each(function(idx) {
+        var tag = $(this).text().trim();
+        if (tag)
+          $('input[name=tag]:last').val(tag);
+        addTag();
+      });
+      $('.tags:last').remove();
+
 
     });
-    console.groupEnd();
 
   });
 
