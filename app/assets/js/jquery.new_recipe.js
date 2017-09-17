@@ -122,15 +122,19 @@ $(document).ready(function () {
       title: '.header-1[itemprop=name]',
       intro: '.recipe-description .legible',
       instructions: '.recipe-preparation ol[itemprop=recipeInstructions]',
-      ingredients: '',
+      ingredients: 'li[itemprop=recipeIngredient]',
       nbr_persons: ''
     }
   }
 
   $('#auto-import').on('blur', function (e) {
     var url = e.target.value;
-    console.log("attempt to import recipe from: ", url);
+    if (!url)
+      return false;
+
     $.get(url, function (data) {
+      console.groupCollapsed("Auto import recipe");
+      console.log("attempt to import recipe from: ", url);
       var site = new URL(url).hostname.split('.')[0];
       var selector = selectors[site];
       if (!selector) {
@@ -139,13 +143,20 @@ $(document).ready(function () {
       }
 
       ['title', 'intro', 'instructions'].forEach(function(prop) {
-        console.log(prop);
         var propValue = $(data).find(selector[prop]).text().trim();
-        console.log(propValue);
         $('#' + prop).val(propValue);
       });
 
+      $(data).find(selector['ingredients']).each(function (idx) {
+        var ingredient = $(this);
+        if (!ingredient)
+          return false;
+        $('input[name=ingredient]:last').val(ingredient.text().trim());
+        addIngredient();
+      });
+
     });
+    console.groupEnd();
 
   });
 
