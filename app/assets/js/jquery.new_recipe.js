@@ -117,33 +117,33 @@ $(document).ready(function () {
   $('#addTag').click(function () { addTag(); });
 
 
-  var selectors = {
-    receptfavoriter: {
-      title: '.header-1[itemprop=name]',
-      intro: '.recipe-description .legible',
-      instructions: 'li[itemprop=itemListElement]',
-      ingredients: 'li[itemprop=recipeIngredient]',
-      nbr_persons: 'h3[itemprop=recipeYield]',
-      tags: '.tags.tag-label a'
-    }
-    // ica: {
-      // title: '.recipepage__headline',
-      // intro: 'p.recipe-preamble',
-      // instructions: '#recipe-howto ol li',
-      // ingredients: '.ingredients__list__item',
-      // nbr_persons: '#currentPortions',
-      // tags: '.related-recipe-tags__container'
-
-    // }
+  var selectors = {}
+  selectors['receptfavoriter.se'] = {
+    title: '.header-1[itemprop=name]',
+    intro: '.recipe-description .legible',
+    instructions: 'li[itemprop=itemListElement]',
+    ingredients: 'li[itemprop=recipeIngredient]',
+    nbr_persons: 'h3[itemprop=recipeYield]',
+    tags: '.tags.tag-label a'
+  }
+  selectors['www.ica.se'] = {
+    title: 'h1.recipepage__headline',
+    intro: 'p.recipe-preamble',
+    instructions: '#recipe-howto ol li',
+    ingredients: 'li.ingredients__list__item',
+    nbr_persons: '#currentPortions',
+    tags: '.related-recipe-tags__container a'
+  }
+  selectors['alltommat.se'] = {
   }
 
-  $('#auto-import').on('change', function (e) {
+  $('#auto-import').on('blur', function (e) {
     var url = e.target.value;
     if (!url)
       return false;
 
-    $.get(url, function (data) {
-      var site = new URL(url).hostname.split('.')[0];
+    $.get('/reverse_proxy', { site: url }, function (data) {
+      var site = new URL(url).hostname;
       var selector = selectors[site];
       if (!selector) {
         console.error("The site `" + site + "` is not supported");
@@ -166,6 +166,7 @@ $(document).ready(function () {
       $('.ingredients').remove();
       $(data).find(selector['ingredients']).each(function(idx) {
         var ingredient = $(this);
+        console.log(ingredient);
         if (!ingredient)
           return false;
         $('input[name=ingredient]:last').val(ingredient.text().trim());
@@ -173,9 +174,9 @@ $(document).ready(function () {
       });
       $('.ingredients:last').remove();
 
-      var nbrPersons = $(data).find(selector['nbr_persons']).text().match(/\d+/)[0];
+      var nbrPersons = $(data).find(selector['nbr_persons']).text().match(/\d+/);
       if (nbrPersons)
-        $('#nbrPersons').val(nbrPersons);
+        $('#nbrPersons').val(nbrPersons[0]);
 
       $(data).find(selector['tags']).each(function(idx) {
         var tag = $(this).text().trim();
