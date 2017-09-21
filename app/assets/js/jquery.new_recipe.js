@@ -131,7 +131,10 @@ $(document).ready(function () {
     intro: 'p.recipe-preamble',
     instructions: '#recipe-howto ol li',
     ingredients: 'li.ingredients__list__item',
-    nbr_persons: '#currentPortions',
+    nbr_persons_data: {
+      elem: '.servings-picker',
+      data_field: 'currentPortions'
+    },
     tags: '.related-recipe-tags__container a'
   }
   selectors['alltommat.se'] = {
@@ -142,13 +145,19 @@ $(document).ready(function () {
     if (!url)
       return false;
 
+    var site = new URL(url).hostname;
+    var selector = selectors[site];
+    if (!selector) {
+      console.error("The site `" + site + "` is not supported");
+      return false;
+    }
+
     $.get('/reverse_proxy', { site: url }, function (data) {
-      var site = new URL(url).hostname;
-      var selector = selectors[site];
-      if (!selector) {
-        console.error("The site `" + site + "` is not supported");
-        return false;
-      }
+      // TODO: fetch images
+      // Remove all src directives to prevent unnecessay requests for external
+      // resources, such as images
+      var re = /src="(.+?)"/g;
+      var data = data.replace(re, '$href=""');
 
       ['title', 'intro'].forEach(function(prop) {
         var propValue = $(data).find(selector[prop]).text().trim();
@@ -166,7 +175,6 @@ $(document).ready(function () {
       $('.ingredients').remove();
       $(data).find(selector['ingredients']).each(function(idx) {
         var ingredient = $(this);
-        console.log(ingredient);
         if (!ingredient)
           return false;
         $('input[name=ingredient]:last').val(ingredient.text().trim());
@@ -174,9 +182,16 @@ $(document).ready(function () {
       });
       $('.ingredients:last').remove();
 
-      var nbrPersons = $(data).find(selector['nbr_persons']).text().match(/\d+/);
-      if (nbrPersons)
-        $('#nbrPersons').val(nbrPersons[0]);
+      if (selector['nbr_persons']) {
+        var nbrPersons = $(data).find(selector['nbr_persons']).text().match(/\d+/);
+        if (nbrPersons)
+          $('#nbrPersons').val(nbrPersons[0]);
+      } else {
+        var sel = selector['nbr_persons_data'];
+        var nbrPersons = $(data).find(sel.elem).data(sel.data_field);
+        if (nbrPersons)
+          $('#nbrPersons').val(nbrPersons);
+      }
 
       $(data).find(selector['tags']).each(function(idx) {
         var tag = $(this).text().trim();
@@ -185,7 +200,6 @@ $(document).ready(function () {
         addTag();
       });
       $('.tags:last').remove();
-
 
     });
 

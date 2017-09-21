@@ -11,8 +11,8 @@ if (isset($_GET['site'])) {
   header('Access-Control-Allow-Origin: *');
 
   try {
-    $res = file_get_contents($site);
-    echo $res;
+    $html = file_get_contents($site);
+    echo $html;
   } catch(Exception $e) {
     http_response_code(418);
   }
