@@ -92,7 +92,7 @@ $(document).ready(function () {
 
   /**----------------------------------------------------------------
                 "Lägg till taggar", event handlers för att ta bort etc.
-        -----------------------------------------------------------------*/
+  -----------------------------------------------------------------*/
   function addTag() {
     // Om rubrik inte finnns, lägg till
     if (!$('#tagsDiv .icon').length) {
@@ -117,27 +117,73 @@ $(document).ready(function () {
   $('#addTag').click(function () { addTag(); });
 
 
-  var selectors = {}
-  selectors['receptfavoriter.se'] = {
-    title: '.header-1[itemprop=name]',
-    intro: '.recipe-description .legible',
-    instructions: 'li[itemprop=itemListElement]',
-    ingredients: 'li[itemprop=recipeIngredient]',
-    nbr_persons: 'h3[itemprop=recipeYield]',
-    tags: '.tags.tag-label a'
-  }
-  selectors['www.ica.se'] = {
-    title: 'h1.recipepage__headline',
-    intro: 'p.recipe-preamble',
-    instructions: '#recipe-howto ol li',
-    ingredients: 'li.ingredients__list__item',
-    nbr_persons_data: {
-      elem: '.servings-picker',
-      data_field: 'currentPortions'
+  /**----------------------------------------------------------------
+        Auto import recipes from external sites
+  -----------------------------------------------------------------*/
+
+  // `extractors` contain one extractor object for each site supported,
+  // each extractor object defines functions to retrieve:
+  // - title: String
+  // - intro: String
+  // - instructions: String (md formatted as numbered list of paragraphs)
+  // - ingredients: Array[String]
+  // - recipe yield (nbr of persons): Int
+  // - image: image url
+  var extractors = {}
+  extractors['receptfavoriter.se'] = {
+    title: textFromElem.bind(null, '.header-1[itemprop=name]'),
+    intro: textFromElem.bind(null, '.recipe-description .legible'),
+    instructions: paragraphsToMarkdown.bind(null, 'li[itemprop=itemListElement]'),
+    ingredients: selectionsToArray.bind(null, 'li[itemprop=recipeIngredient]'),
+    nbr_persons: function(data) {
+      var nbrMaybe = $(data).find('h3[itemprop=recipeYield]').text().match(/\d+/);
+      if (nbrMaybe.length) {
+        return nbrMaybe[0];
+      } else {
+        return undefined;
+      }
     },
-    tags: '.related-recipe-tags__container a'
+    // image: {
+      // type: 'src',
+      // elem: 'img[itemprop=image]'
+    // }
+    tags: selectionsToArray.bind(null, '.tags.tag-label a')
   }
-  selectors['alltommat.se'] = {
+  extractors['www.ica.se'] = {
+    title: textFromElem.bind(null, 'h1.recipepage__headline'),
+    intro: textFromElem.bind(null, 'p.recipe-preamble'),
+    instructions: paragraphsToMarkdown.bind(null, '#recipe-howto ol li'),
+    ingredients: 'li.ingredients__list__item',
+    nbr_persons: function(data) {
+      return $(data).find('.servings-picker').data('current-portions');
+    },
+    tags: selectionsToArray.bind(null, '.related-recipe-tags__container a'),
+  }
+  extractors['alltommat.se'] = {
+  }
+
+  function textFromElem(selector, data) {
+    return $(data).find(selector).text().trim();
+  }
+
+  function selectionsToArray(selector, data) {
+      var items = [];
+      $(data).find(selector).each(function (idx) {
+        var item = $(this).text().trim();
+        if (item)
+          items.push(item);
+      });
+      return items;
+  }
+
+  function paragraphsToMarkdown(selector, data) {
+    var paragraphs = [];
+    $(data).find(selector).each(function (idx) {
+      var p = $(this).text().trim();
+      var markdownP = `${idx + 1}. ${p}`;
+      paragraphs.push(markdownP);
+    });
+    return  paragraphs.join('\n');
   }
 
   $('#auto-import').on('blur', function (e) {
@@ -146,8 +192,8 @@ $(document).ready(function () {
       return false;
 
     var site = new URL(url).hostname;
-    var selector = selectors[site];
-    if (!selector) {
+    var extractor = extractors[site];
+    if (!extractor) {
       console.error("The site `" + site + "` is not supported");
       return false;
     }
@@ -159,47 +205,39 @@ $(document).ready(function () {
       var re = /src="(.+?)"/g;
       var data = data.replace(re, '$href=""');
 
-      ['title', 'intro'].forEach(function(prop) {
-        var propValue = $(data).find(selector[prop]).text().trim();
-        $('#' + prop).val(propValue);
-      });
+      var title = extractor['title'](data);
+      console.log(`title: ${title}`);
+      $('#title').val(title);
 
-      $('#instructions').val('');
-      $(data).find(selector['instructions']).each(function (idx) {
-        var value = $(this).text().trim();
-        var old = $('#instructions').val();
-        var step =  (idx + 1) + '. ' + value + '\n';
-        $('#instructions').val(old + step);
-      });
+      var intro = extractor['intro'](data);
+      console.log(`intro: ${intro}`);
+      $('#intro').val(intro);
 
+      var instructions = extractor['instructions'](data);
+      console.log(`instructions:\n${instructions}`);
+      $('#instructions').val(instructions);
+
+
+      var ingredients = extractor['ingredients'](data);
+      console.log("ingredients", ingredients);
       $('.ingredients').remove();
-      $(data).find(selector['ingredients']).each(function(idx) {
-        var ingredient = $(this);
-        if (!ingredient)
-          return false;
-        $('input[name=ingredient]:last').val(ingredient.text().trim());
+      ingredients.forEach(function (ingredient) {
         addIngredient();
+        $('input[name=ingredient]:last').val(ingredient);
       });
       $('.ingredients:last').remove();
 
-      if (selector['nbr_persons']) {
-        var nbrPersons = $(data).find(selector['nbr_persons']).text().match(/\d+/);
-        if (nbrPersons)
-          $('#nbrPersons').val(nbrPersons[0]);
-      } else {
-        var sel = selector['nbr_persons_data'];
-        var nbrPersons = $(data).find(sel.elem).data(sel.data_field);
-        if (nbrPersons)
-          $('#nbrPersons').val(nbrPersons);
-      }
+      var nbrPersons = extractor['nbr_persons'](data);
+      console.log(`nbrPersons: ${nbrPersons}`);
+      $('#nbrPersons').val(nbrPersons);
 
-      $(data).find(selector['tags']).each(function(idx) {
-        var tag = $(this).text().trim();
-        if (tag)
-          $('input[name=tag]:last').val(tag);
-        addTag();
-      });
+      var tags = extractor['tags'](data);
+      console.log("tags", tags);
       $('.tags:last').remove();
+      tags.forEach(function (tag) {
+        addTag();
+        $('input[name=tag]:last').val(tag);
+      });
 
     });
 
