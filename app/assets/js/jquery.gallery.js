@@ -1,10 +1,7 @@
-/*--------------------------------
-        jQuery
-----------------------------------*/
 $(function(){
   /**--------------------------------
-                Variabler
-        ----------------------------------*/
+            Variabler
+  ----------------------------------*/
   var dropbox = $('#gallery'),
     previewDiv = $('#previewDiv'),
     template = '<div class="preview">'+
@@ -21,9 +18,11 @@ $(function(){
     totalFileSize = 0,
     maxAllowedTotalFileSize = 100*1024*1024; // 100 MB
 
+  window.image_template = template;
+
   /**---------------------------------
-                Event handlers
-        -----------------------------------*/
+            Event handlers
+  -----------------------------------*/
   // Dragover
   dropbox.on('dragover', function() {
     // Ändra ikonen
@@ -94,9 +93,9 @@ $(function(){
   });
 
   /*--------------------------------
-                Funktion för att processera
-                listan med filer som valts
-        ----------------------------------*/
+      Funktion för att processera
+      listan med filer som valts
+  ----------------------------------*/
   function processFiles(files) {
     if(files && typeof FileReader !== "undefined") {
       // process each files only if browser is supported
@@ -116,24 +115,23 @@ $(function(){
   }
 
   /*--------------------------------
-                Funktion för att skapa previews
-        ----------------------------------*/
-  function createPreview(file){
+    Funktion för att skapa previews
+  ----------------------------------*/
+  function createPreview(file) {
+    console.log(file);
 
     var preview = $(template),
-      image = $('img', preview);
+        image = $('img', preview);
 
     var reader = new FileReader();
 
     image.width = 100;
     image.height = 100;
 
-    reader.onload = function(e){
-
+    reader.onload = function(e) {
       // e.target.result holds the DataURL which
       // can be used as a source of the image:
-
-      image.attr('src',e.target.result);
+      image.attr('src', e.target.result);
     };
 
     // Reading the file as a DataURL. When finished,
@@ -145,7 +143,6 @@ $(function(){
 
     // Associating a preview container
     // with the file, using jQuery's $.data():
-
-    $.data(file,preview);
+    $.data(file, preview);
   }
 });

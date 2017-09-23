@@ -143,21 +143,25 @@ $(document).ready(function () {
         return undefined;
       }
     },
-    // image: {
-      // type: 'src',
-      // elem: 'img[itemprop=image]'
-    // }
+    image: function(data) {
+      return $(data).find('a.image-caption-wrap').attr('href');
+    },
     tags: selectionsToArray.bind(null, '.tags.tag-label a')
   }
   extractors['www.ica.se'] = {
     title: textFromElem.bind(null, 'h1.recipepage__headline'),
     intro: textFromElem.bind(null, 'p.recipe-preamble'),
     instructions: paragraphsToMarkdown.bind(null, '#recipe-howto ol li'),
-    ingredients: 'li.ingredients__list__item',
+    ingredients: selectionsToArray.bind(null, 'li span.ingredient'),
     nbr_persons: function(data) {
       return $(data).find('.servings-picker').data('current-portions');
     },
     tags: selectionsToArray.bind(null, '.related-recipe-tags__container a'),
+    image: function(data) {
+      var urlStr =  $(data).find('.hero__image__background').css('background-image');
+      var url = urlStr.replace(/url\("(.+)"\)/, '$1');
+      return url;
+    }
   }
   extractors['alltommat.se'] = {
   }
@@ -167,13 +171,15 @@ $(document).ready(function () {
   }
 
   function selectionsToArray(selector, data) {
-      var items = [];
-      $(data).find(selector).each(function (idx) {
-        var item = $(this).text().trim();
-        if (item)
-          items.push(item);
-      });
-      return items;
+    console.log("selectionsToArray", selector);
+    var items = [];
+    console.log($(data).find(selector));
+    $(data).find(selector).each(function (idx) {
+      var item = $(this).text().trim();
+      if (item)
+        items.push(item);
+    });
+    return items;
   }
 
   function paragraphsToMarkdown(selector, data) {
@@ -199,7 +205,6 @@ $(document).ready(function () {
     }
 
     $.get('/reverse_proxy', { site: url }, function (data) {
-      // TODO: fetch images
       // Remove all src directives to prevent unnecessay requests for external
       // resources, such as images
       var re = /src="(.+?)"/g;
@@ -217,7 +222,7 @@ $(document).ready(function () {
       console.log(`instructions:\n${instructions}`);
       $('#instructions').val(instructions);
 
-
+      // TODO: support "sets"
       var ingredients = extractor['ingredients'](data);
       console.log("ingredients", ingredients);
       $('.ingredients').remove();
@@ -238,6 +243,36 @@ $(document).ready(function () {
         addTag();
         $('input[name=tag]:last').val(tag);
       });
+
+      var imageURL = extractor['image'](data);
+
+      // Converts URL pointing to image to a DataURI
+      function getDataURI(url, callback) {
+        var image = new Image();
+
+        image.onload = function() {
+          var canvas = document.createElement('canvas');
+          canvas.width = this.naturalWidth;
+          canvas.height = this.naturalHeight;
+
+          canvas.getContext('2d').drawImage(this, 0, 0);
+          callback(canvas.toDataURL());
+        };
+
+        image.src = url;
+      }
+
+      getDataURI(`/reverse_proxy?site=${imageURL}`, function(dataURI) {
+        var previewImg = `<div class="preview">
+        <span class="imageHolder"><img src="${dataURI}"/></span>
+        <span class="remover"><a style="display: none" class="icon">ç</a></span>
+        <input type="text" class="imgcaption" placeholder="Skriv en bildtext här." />
+        </div>`
+
+        $('#previewDiv').append(previewImg);
+      });
+
+
 
     });
 

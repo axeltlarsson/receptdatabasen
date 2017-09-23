@@ -151,7 +151,7 @@ $(function(){
       }
 
       /*----------------------------------------------
-          Omvandla kvanitet
+          Omvandla kvantitet
       ------------------------------------------------*/
       // Matchar newString mot regex - bearbetar talet i callbackfunktionen
       var regex = /\d+\.\d*|\d+\,\d*|\d+/g; // matchar tal
