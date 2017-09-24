@@ -24,13 +24,12 @@ and letsencrypt.
 
 `docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d`
 
-Then you might have to to do `docker exec -it receptdatasen_app_1 bash` and `composer install` in /app.
-
 For production, [./nginx.prod.conf](./nginx.prod.conf) is used and you will want to create a ".htpasswd" file.
 
 Then connect your nginx reverse proxy to the network created:
 `docker network connect receptdatasen_front nginx-proxy`
-(replace nginx-proxy with container name of your nginx reverse proxy).
+(replace nginx-proxy with container name of your nginx reverse proxy)
+**and** connect the vhost to the `bridge` network.
 
 ## Manual setup
 * You need a web server serving the "app", I use nginx with the configuration
