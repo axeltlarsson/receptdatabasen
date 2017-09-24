@@ -45,6 +45,8 @@
 		<!-- Sidspecifik CSS -->
 		<link rel="stylesheet" type="text/css" href="./assets/css/newRecipe.css" />
 		<!-- Sidscpecifik jQuery -->
+
+		<script src="./assets/js/jquery.auto-import.js"></script>
 		<script src="./assets/js/jquery.new_recipe.js"></script>
 		<script src="./assets/js/jquery.gallery.js"></script>
 		<script src="./assets/js/jquery.validation.js"></script>

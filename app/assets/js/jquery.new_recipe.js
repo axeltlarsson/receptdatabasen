@@ -117,116 +117,14 @@ $(document).ready(function () {
   $('#addTag').click(function () { addTag(); });
 
 
-  /**----------------------------------------------------------------
-        Auto import recipes from external sites
-  -----------------------------------------------------------------*/
-
-  // `extractors` contain one extractor object for each site supported,
-  // each extractor object defines functions to retrieve:
-  // - title: String
-  // - intro: String
-  // - instructions: String (md formatted as numbered list of paragraphs)
-  // - ingredients: Array[String]
-  // - recipe yield (nbr of persons): Int
-  // - image: image url
-  var extractors = {}
-  extractors['receptfavoriter.se'] = {
-    title: textFromElem.bind(null, '.header-1[itemprop=name]'),
-    intro: textFromElem.bind(null, '.recipe-description .legible'),
-    instructions: (data) => paragraphsToMarkdown($(data).find('li[itemprop=itemListElement]')),
-    ingredients: selectionsToArray.bind(null, 'li[itemprop=recipeIngredient]'),
-    nbr_persons: function(data) {
-      var nbrMaybe = $(data).find('h3[itemprop=recipeYield]').text().match(/\d+/);
-      if (nbrMaybe.length) {
-        return nbrMaybe[0];
-      } else {
-        return undefined;
-      }
-    },
-    image: function(data) {
-      return $(data).find('a.image-caption-wrap').attr('href');
-    },
-    tags: selectionsToArray.bind(null, '.tags.tag-label a')
-  }
-  extractors['www.ica.se'] = {
-    title: textFromElem.bind(null, 'h1.recipepage__headline'),
-    intro: textFromElem.bind(null, 'p.recipe-preamble'),
-    instructions: (data) => paragraphsToMarkdown($(data).find('#recipe-howto ol li')),
-    ingredients: selectionsToArray.bind(null, 'li span.ingredient'),
-    nbr_persons: function(data) {
-      return $(data).find('.servings-picker').data('current-portions');
-    },
-    tags: selectionsToArray.bind(null, '.related-recipe-tags__container a'),
-    image: function(data) {
-      var urlStr =  $(data).find('.hero__image__background').css('background-image');
-      var url = urlStr.replace(/url\("(.+)"\)/, '$1');
-      return url;
-    }
-  }
-  extractors['alltommat.se'] = {
-    title: function(data) {
-      return $(data).find('h1.recipe-title')[0].firstChild.data.trim();
-    },
-    intro: textFromElem.bind(null, '.article-content-inner > p:nth-child(1)'),
-    instructions: function(data) {
-      var sections = $(data).find('span[itemprop=recipeInstructions] ol');
-      var md = [];
-      sections.each(function(idx) {
-        var body = $(this).children('li');
-        var heading = $(this).prev('h2').text();
-        var bodyAsMd = paragraphsToMarkdown(body, data);
-        var sectionAsMd = `## ${heading}\n${bodyAsMd}`;
-        md.push(sectionAsMd);
-      });
-      return md.join('\n');
-    },
-    ingredients: function(data) {
-      var sets = {}
-      $(data).find('table.ingredients-list').each(function (idx) {
-        var heading = $(this).children('caption[itemprop=name]').text().trim() || 'Ingredienser';
-        var ingredients = [];
-        $(this).children('tbody').children('tr').each(function (idx) {
-          var quantity = $(this).children('td').text().trim();
-          var ingredient = $(this).children('th[itemprop=recipeIngredient]').text().trim();
-          ingredients.push(`${quantity} ${ingredient}`);
-        });
-        sets[heading] = ingredients;
-      });
-      return sets;
-    }
-  }
-
-  function textFromElem(selector, data) {
-    return $(data).find(selector).text().trim();
-  }
-
-  function selectionsToArray(selector, data) {
-    var items = [];
-    $(data).find(selector).each(function (idx) {
-      var item = $(this).text().trim();
-      if (item)
-        items.push(item);
-    });
-    return items;
-  }
-
-  function paragraphsToMarkdown(paragraphs) {
-    var md = [];
-    paragraphs.each(function (idx) {
-      var p = $(this).text().trim();
-      var markdownP = `${idx + 1}. ${p}`;
-      md.push(markdownP);
-    });
-    return md.join('\n');
-  }
-
-  $('#auto-import').on('blur', function (e) {
+  // Auto import recipe from URL
+  $('#auto-import').on('change', function (e) {
     var url = e.target.value;
     if (!url)
       return false;
 
     var site = new URL(url).hostname;
-    var extractor = extractors[site];
+    var extractor = autoImport.extractors[site];
     if (!extractor) {
       console.error("The site `" + site + "` is not supported");
       return false;
@@ -250,15 +148,19 @@ $(document).ready(function () {
       console.log(`instructions:\n${instructions}`);
       $('#instructions').val(instructions);
 
-      // TODO: support "sets"
-      var ingredients = extractor['ingredients'](data);
-      console.log("ingredients", ingredients);
-      $('.ingredients').remove();
-      ingredients.forEach(function (ingredient) {
-        addIngredient();
-        $('input[name=ingredient]:last').val(ingredient);
+      var sets = extractor['ingredients'](data);
+      console.log("ingredients", sets);
+      $('.set').remove();
+      Object.keys(sets).forEach(function (set) {
+        addSet();
+        $('#selectedSet .setHeading').val(set);
+        var ingredients = sets[set];
+        ingredients.forEach(function (ingredient) {
+          $('#selectedSet .ingredients input[name=ingredient]:last').val(ingredient);
+          addIngredient();
+        });
+        $('#selectedSet .ingredients:last').remove();
       });
-      $('.ingredients:last').remove();
 
       var nbrPersons = extractor['nbr_persons'](data);
       console.log(`nbrPersons: ${nbrPersons}`);
@@ -298,12 +200,11 @@ $(document).ready(function () {
         </div>`
 
         $('#previewDiv').append(previewImg);
+
+        $('#saveRecipe a').attr('id', 'active');
       });
 
-
-
     });
-
   });
 
   /**----------------------------------------------------------------
