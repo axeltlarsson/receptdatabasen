@@ -42,15 +42,16 @@
 		}
 	?>
 	
-		<!-- Sidspecifik CSS -->
-		<link rel="stylesheet" type="text/css" href="./assets/css/newRecipe.css" />
 		<!-- Sidscpecifik jQuery -->
-
+                <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
 		<script src="./assets/js/jquery.auto-import.js"></script>
 		<script src="./assets/js/jquery.new_recipe.js"></script>
 		<script src="./assets/js/jquery.gallery.js"></script>
 		<script src="./assets/js/jquery.validation.js"></script>
-        <script src='./assets/js/jquery.autosize.js'></script>
+                <script src='./assets/js/jquery.autosize.js'></script>
+                <!-- Sidspecifik CSS -->
+                <link rel="stylesheet" type="text/css" href="./assets/css/newRecipe.css" />
 		
 		<script>
 			$(document).ready(function(){

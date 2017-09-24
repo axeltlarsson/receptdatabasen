@@ -4,6 +4,18 @@ $(document).ready(function () {
   "use strict";
 
   $('nav ul li#new_recipe').hide();
+
+  // Load Simple Markdown Editor
+  var instructionsMDE = new SimpleMDE({
+    element: document.getElementById("instructions"),
+    spellChecker: false,
+    forceSync: true,
+    autosave: {
+      enabled: true,
+      uniqueId: 'instructions'
+    },
+    hideIcons: ['preview', 'side-by-side', 'image']
+  });
   // Auto resize textareas
   $("textarea").autosize();
 
@@ -146,7 +158,7 @@ $(document).ready(function () {
 
       var instructions = extractor['instructions'](data);
       console.log(`instructions:\n${instructions}`);
-      $('#instructions').val(instructions);
+      instructionsMDE.value(instructions);
 
       var sets = extractor['ingredients'](data);
       console.log("ingredients", sets);

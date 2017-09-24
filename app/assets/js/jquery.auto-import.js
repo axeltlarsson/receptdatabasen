@@ -63,7 +63,7 @@ var autoImport = (function() {
         var body = $(this).children('li');
         var heading = $(this).prev('h2').text();
         var bodyAsMd = paragraphsToMarkdown(body, data);
-        var sectionAsMd = `## ${heading}\n${bodyAsMd}`;
+        var sectionAsMd = `## ${heading}\n${bodyAsMd}\n`;
         md.push(sectionAsMd);
       });
       return md.join('\n');

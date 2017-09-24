@@ -2,11 +2,11 @@
 CSS för newRecipe.php
 ------------------------------------------*/
 /* Färgpalett "Sa Barca de Formentera"
-#333333
-#424242
-#00CCD6
-#EFEFEF
-#FFD900
+#424242 - dark grey
+#333333 - darker grey
+#00CCD6 - turqoise
+#EFEFEF - light grey
+#FFD900 - yellow
  */
 
 textarea {
@@ -228,12 +228,27 @@ input[name=ingredient], .setHeading  {
 
   padding: 0.625em 0.625em 0.625em 0.625em;
 
-  background-color: #424242;
-  color: #EFEFEF;
+  /* background-color: #424242; */
+  /* color: #EFEFEF; */
 
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
+}
+
+.editor-toolbar {
+  opacity: 1.0;
+  background-color: #424242;;
+  color: #EFEFEF;;
+}
+/* .CodeMirror.cm-s-paper.CodeMirror-wrap { */
+
+  /* background-color: #424242;; */
+  /* color: #EFEFEF;; */
+/* } */
+
+.editor-toolbar a {
+  color: #FFD900!important;
 }
 
 /*--------------------------------------------
