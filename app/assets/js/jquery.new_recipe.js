@@ -10,10 +10,7 @@ $(document).ready(function () {
     element: document.getElementById("instructions"),
     spellChecker: false,
     forceSync: true,
-    autosave: {
-      enabled: true,
-      uniqueId: 'instructions'
-    },
+    indentWithThabs: false,
     hideIcons: ['preview', 'side-by-side', 'image']
   });
   // Auto resize textareas
